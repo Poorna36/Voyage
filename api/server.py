@@ -137,6 +137,10 @@ if frontend_dist.exists() and (frontend_dist / "index.html").exists():
     if assets_dir.exists():
         app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="static_assets")
 
+    cesium_dir = frontend_dist / "cesium"
+    if cesium_dir.exists():
+        app.mount("/cesium", StaticFiles(directory=str(cesium_dir)), name="static_cesium")
+
     @app.get("/{full_path:path}")
     async def serve_spa(full_path: str):
         if full_path.startswith(("api/", "docs", "redoc", "openapi.json")):

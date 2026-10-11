@@ -1,8 +1,22 @@
 # ==============================================================================
-# SIH 2026 PS-26166: Lunar Image Correspondence & Pipeline Backend API
-# Production Dockerfile for Railway Deployment (Backend Service)
+# SIH 2026 PS-26166: Lunar Image Correspondence & Pipeline Dashboard
+# Multi-stage Production Dockerfile for Railway Deployment (Unified Fullstack)
 # ==============================================================================
 
+# ── Stage 1: Build Frontend (Node.js) ──
+FROM node:20-slim AS frontend-builder
+WORKDIR /app/sih-dashboard
+
+# Install frontend dependencies
+COPY sih-dashboard/package*.json ./
+RUN npm ci
+
+# Copy frontend source and build production bundle
+COPY sih-dashboard/ ./
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+RUN npm run build
+
+# ── Stage 2: Python Backend Runtime ──
 FROM python:3.12-slim AS runner
 
 WORKDIR /app
@@ -33,6 +47,9 @@ COPY configs/ ./configs/
 COPY models/ ./models/
 COPY scripts/ ./scripts/
 COPY src/ ./src/
+
+# Copy built frontend assets from Stage 1 into sih-dashboard/dist
+COPY --from=frontend-builder /app/sih-dashboard/dist ./sih-dashboard/dist
 
 # Ensure runtime directories exist
 RUN mkdir -p data/processed data/raw data/calibrated data/pairs results
