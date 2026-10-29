@@ -1,0 +1,109 @@
+# =============================================================================
+# configs/quantum.yaml
+# Chandrayaan-2 Lunar Image Registration — Quantum Subsystem Configuration
+# =============================================================================
+
+enabled: true
+global_mode: "shadow"   # "off" | "shadow" | "active"
+seed: 42
+
+# Operational limits (enforced in quantum/service.py)
+limits:
+  max_qubits: 16               # statevector simulation limit
+  max_runtime_s: 60.0          # per module wall-clock limit
+  max_problem_variables: 64    # max vars before SQA/split fallback
+
+# Default backend
+default_backend: "numpy_statevector"
+
+# Module configurations
+modules:
+  Q0_filter:
+    name: "QUBO Correspondence Filter"
+    mode: "shadow"             # off | shadow | active
+    solver: "sqa"              # sqa | qaoa | classical_sa | hungarian
+    max_candidates: 48
+    unary_weight: 1.0
+    pairwise_weight: 1.0
+    lambda_penalty: 5.0
+    dynamic_lambda: true
+    sqa_sweeps: 500
+    sqa_reads: 5
+
+  Q1_selection:
+    name: "QAOA Keypoint-Subset Selection"
+    mode: "shadow"
+    grid_n: 8
+    cap_per_cell: 5
+    max_qubits_per_cell: 12
+    p_layers: 2
+    restarts: 5
+    redundancy_mu: 1.5
+    sigma_fraction: 0.333333
+    shots: 1024
+
+  Q2_router:
+    name: "Quantum Kernel Matcher Router"
+    mode: "shadow"
+    qubits: 8
+    reps: 2
+    c_reg: 1.0
+    subsample_max: 1000
+
+  Q2_inlier:
+    name: "Quantum Kernel Inlier Scorer"
+    mode: "shadow"
+    qubits: 8
+    reps: 2
+    c_reg: 1.0
+    subsample_max: 1000
+
+  Q3_consensus:
+    name: "Grover Consensus Hypotheses Search"
+    mode: "shadow"
+    max_candidate_matches: 16
+    subset_size: 4
+    inlier_threshold_px: 3.0
+    min_inlier_ratio: 0.50
+    shots: 1024
+
+  Q4_phase_corr:
+    name: "QFT Phase Correlation"
+    mode: "shadow"
+    tile_size: 32              # 32x32 -> 10 qubits (5 row + 5 col)
+    hann_window: true
+    zero_pad: true
+    subpixel_paraboloid: true
+
+  Q5_encoding:
+    name: "Quantum Image Encoding & Edge Detection"
+    mode: "shadow"
+    tile_size: 16              # 16x16 -> FRQI: 9 qubits, NEQR: 16 qubits
+    encoding_type: "frqi"      # frqi | neqr | amplitude
+    edge_detection: true
+
+  Q7_signing:
+    name: "Post-Quantum Cryptographic Signatures"
+    mode: "active"             # Active when keys available
+    algorithm: "ML-DSA-65+Ed25519"
+    pubkey_id: "voyage-2026-01"
+    private_key_env: "VOYAGE_PQC_PRIVATE_KEY"
+    sign_extensions: [".tif", ".csv", ".json", ".png"]
+
+# Backends configuration
+backends:
+  numpy_statevector:
+    kind: "simulator"
+    max_qubits: 16
+  qiskit_aer:
+    kind: "simulator"
+    max_qubits: 24
+  dwave_neal:
+    kind: "annealer"
+    max_qubits: 2048
+  ibm_runtime:
+    kind: "hardware"
+    max_qubits: 127
+  dwave_leap:
+    kind: "hardware"
+    max_qubits: 5000

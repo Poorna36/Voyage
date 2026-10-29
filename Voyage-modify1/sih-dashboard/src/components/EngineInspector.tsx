@@ -9,8 +9,8 @@ import type {
   UploadedFile
 } from '../types';
 import {
-  PairSummary as DatasetPair,
-  DatasetStats,
+  type PairSummary as DatasetPair,
+  type DatasetStats,
   uploadMissionFiles
 } from '../services/api';
 

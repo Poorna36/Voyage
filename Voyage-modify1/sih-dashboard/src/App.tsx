@@ -7,6 +7,7 @@ import { KeypointViewer } from './components/KeypointViewer';
 import { ResultsView } from './components/ResultsView';
 import { AddFilesModal } from './components/AddFilesModal';
 import { WebGlMoonViewer } from './components/landing/WebGlMoonViewer';
+import { QuantumLab } from './components/quantum/QuantumLab';
 import { useBackendData } from './hooks/useBackendData';
 import { getSlzData, getSpectralData, getTelemetryData, uploadMissionFiles, API_BASE } from './services/api';
 import {
@@ -125,7 +126,7 @@ export function App() {
 
   // Workbench State
   const [selectedScene, setSelectedScene] = useState<ScenePreset>(DEFAULT_SCENE);
-  const [activeCenterTab, setActiveCenterTab] = useState<'3d' | '2d' | 'results'>('3d');
+  const [activeCenterTab, setActiveCenterTab] = useState<'3d' | '2d' | 'results' | 'quantum'>('3d');
   const [pipelineStage, setPipelineStage] = useState<PipelineStage>(PipelineStage.Idle);
   const [isTargetPaletteOpen, setIsTargetPaletteOpen] = useState(false);
   const [isEngineInspectorOpen, setIsEngineInspectorOpen] = useState(false);
@@ -544,6 +545,12 @@ export function App() {
                 isBackendOnline={isBackendOnline}
                 isLoading={isLoadingScience}
               />
+            </div>
+          )}
+
+          {activeCenterTab === 'quantum' && (
+            <div className="absolute inset-0 w-full h-full z-10 pt-20 pb-20 px-4 md:px-12 bg-black/85 backdrop-blur-2xl overflow-y-auto sidebar-scroll pointer-events-auto">
+              <QuantumLab selectedPairId={selectedScene.id} />
             </div>
           )}
 

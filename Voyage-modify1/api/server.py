@@ -26,7 +26,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from api.routes import datasets, config, pipeline, metrics, science  # noqa: E402
+from api.routes import datasets, config, pipeline, metrics, science, quantum  # noqa: E402
 
 # ── Logging ──
 logging.basicConfig(
@@ -81,6 +81,7 @@ app.include_router(config.router)
 app.include_router(pipeline.router)
 app.include_router(metrics.router)
 app.include_router(science.router)
+app.include_router(quantum.router)
 
 
 # ── Health Check ──

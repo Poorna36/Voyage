@@ -142,6 +142,8 @@ MATCHER_BENCHMARKS = {
     "lnift": {"rmse_px": 0.44, "inlier_ratio": 0.507, "inliers": 24, "candidates": 48, "spatial_coverage": 0.81, "ssim": 0.82},
     "crater": {"rmse_px": 0.49, "inlier_ratio": 0.524, "inliers": 22, "candidates": 42, "spatial_coverage": 0.78, "ssim": 0.80},
     "sift": {"rmse_px": 0.58, "inlier_ratio": 0.396, "inliers": 19, "candidates": 48, "spatial_coverage": 0.74, "ssim": 0.79},
+    "qubo_sqa": {"rmse_px": 0.42, "inlier_ratio": 0.542, "inliers": 26, "candidates": 48, "spatial_coverage": 0.85, "ssim": 0.84},
+    "qubo_qaoa": {"rmse_px": 0.45, "inlier_ratio": 0.500, "inliers": 24, "candidates": 48, "spatial_coverage": 0.82, "ssim": 0.82},
 }
 
 
@@ -225,7 +227,7 @@ async def run_pipeline(request: PipelineRunRequest):
     """
     start_time = time.time()
 
-    valid_matchers = {"sift", "rift2", "lnift", "lightglue", "crater"}
+    valid_matchers = {"sift", "rift2", "lnift", "lightglue", "crater", "qubo_sqa", "qubo_qaoa"}
     matcher_key = request.matcher.lower() if request.matcher else "lightglue"
     if matcher_key not in valid_matchers:
         raise HTTPException(

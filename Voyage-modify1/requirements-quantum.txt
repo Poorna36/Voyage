@@ -1,0 +1,22 @@
+# =============================================================================
+# Optional Quantum Extras for Voyage Quantum Subsystem
+# Core simulator modules run with NumPy/SciPy (no extra dependencies required).
+# Install these only if using hardware backends or specific external simulators.
+# =============================================================================
+
+# Qiskit simulator & IBM hardware runtime (optional for Q6)
+qiskit>=1.0.0
+qiskit-aer>=0.14.0
+# qiskit-ibm-runtime>=0.23.0
+
+# D-Wave simulated annealing sampler & Leap hardware (optional for Q6)
+# dwave-neal>=0.6.0
+# dimod>=0.12.0
+# dwave-ocean-sdk>=6.9.0
+
+# PennyLane (optional cross-check for Q2)
+# pennylane>=0.36.0
+
+# Post-quantum cryptography libraries (optional for Q7, fallback uses hybrid Ed25519)
+# dilithium-py>=0.1.0
+# kyber-py>=0.1.0

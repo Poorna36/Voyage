@@ -88,9 +88,33 @@ crater:
   mcr_outlier_method: mcr_structural
   topology_similarity_threshold: 0.65   # (TUNE)
   cpu_fallback: hough_circles            # activated when GPU unavailable; recorded as 'crater_hough'
-  preflight_recall_check: mandatory
   # YOLOv9 validated ONLY at 0.5 m/px NAC. OHRC (0.3 m) and TMC (5 m) are UNVALIDATED_PRIMARY
   # until recall check passes on a manually-verified crater patch for that sensor.
+
+# ---------------------------------------------------------------------------
+# M4: Quantum QUBO Matchers (SQA & QAOA)
+# ---------------------------------------------------------------------------
+qubo_sqa:
+  enabled: true
+  solver: sqa
+  mode: filter                       # 'filter' (Level 2 hybrid) or 'full'
+  max_pairs: 64
+  lambda_penalty: 5.0
+  pair_weight: 1.0
+  sqa_sweeps: 500
+  sqa_reads: 5
+  requires_gpu: false
+
+qubo_qaoa:
+  enabled: true
+  solver: qaoa
+  mode: filter
+  max_pairs: 16
+  lambda_penalty: 5.0
+  pair_weight: 1.0
+  p_layers: 2
+  restarts: 3
+  requires_gpu: false
 
 # ---------------------------------------------------------------------------
 # Arbitration policy (production mode)

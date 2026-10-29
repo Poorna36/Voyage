@@ -134,8 +134,11 @@ class QUBOMatcher(BaseMatcher):
         self.use_sift: bool = bool(cfg["use_sift"])
         self.ratio_thresh: float = float(cfg["ratio_thresh"])
         self.conf_thresh: float = float(cfg["confidence_threshold"])
-        self.max_log_scale_dev: float = float(cfg["max_log_scale_deviation"])
+        self.mode: str = str(cfg.get("mode", "full")).lower()
+        self.pairwise_weight: float = float(cfg.get("pair_weight", 1.0))
+        self.lambda_penalty: float = float(cfg.get("lambda_penalty", 5.0))
         self.formulation_version: str = str(cfg.get("formulation_version", "v2")).lower()
+        self.max_log_scale_dev: float = float(cfg.get("max_log_scale_deviation", 0.5))
 
         # QUBO builder
         self.qubo_builder = QUBOBuilder(
@@ -220,6 +223,143 @@ class QUBOMatcher(BaseMatcher):
                 runtime_s=time.time() - t0,
                 reason=str(exc),
             )
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Q0b: QUBO Consistency Filter (Hybrid Level 2 Filter)
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def filter_matches(
+        self,
+        raw_matches: MatchResult,
+        gsd_ratio: float = 1.0,
+        cap: Optional[int] = None,
+        seed: int = 42,
+    ) -> Tuple[MatchResult, Dict[str, Any]]:
+        """
+        Q0b: Take raw candidate matches and filter them for geometric consistency
+        and one-to-one uniqueness using QUBO Ising optimization.
+
+        Parameters
+        ----------
+        raw_matches : MatchResult from any upstream matcher
+        gsd_ratio   : source GSD / reference GSD
+        cap         : max candidate variables (defaults to 16 for QAOA, 64 for SQA)
+        seed        : random seed
+
+        Returns
+        -------
+        (filtered_result, info_dict)
+        """
+        t0 = time.time()
+        N = raw_matches.count
+        if N == 0:
+            return raw_matches, {"energy": 0.0, "n_vars": 0, "runtime_s": 0.0, "kept": 0}
+
+        default_cap = 16 if self.solver_name == "qaoa" else 64
+        actual_cap = cap or default_cap
+
+        # Truncate to top candidates by confidence if needed
+        src_xy = np.copy(raw_matches.src_xy)
+        ref_xy = np.copy(raw_matches.ref_xy)
+        conf = np.copy(raw_matches.confidence)
+        scale = np.copy(raw_matches.scale) if raw_matches.scale is not None else None
+        angle = np.copy(raw_matches.angle_deg) if raw_matches.angle_deg is not None else None
+
+        if N > actual_cap:
+            idx = np.argsort(-conf)[:actual_cap]
+            src_xy = src_xy[idx]
+            ref_xy = ref_xy[idx]
+            conf = conf[idx]
+            if scale is not None:
+                scale = scale[idx]
+            if angle is not None:
+                angle = angle[idx]
+            M = actual_cap
+        else:
+            M = N
+
+        # Build QUBO Hamiltonian
+        Q = np.zeros((M, M), dtype=np.float64)
+
+        # Unary term: reward high confidence -> minimize -conf
+        for i in range(M):
+            Q[i, i] = -float(conf[i])
+
+        # Pairwise term: enforce one-to-one constraint and relative distance consistency
+        lambda_pen = float(self.lambda_penalty)
+        pair_w = float(self.pairwise_weight)
+
+        for i in range(M):
+            for j in range(i + 1, M):
+                # 1. Spatial uniqueness (one-to-one)
+                d_src_ij = float(np.linalg.norm(src_xy[i] - src_xy[j]))
+                d_ref_ij = float(np.linalg.norm(ref_xy[i] - ref_xy[j]))
+
+                if d_src_ij < 2.0 or d_ref_ij < 2.0:
+                    Q[i, j] += lambda_pen
+                else:
+                    # 2. Geometric distance ratio consistency
+                    if d_src_ij > 5.0 and d_ref_ij > 5.0:
+                        ratio = d_src_ij / (d_ref_ij * gsd_ratio + 1e-6)
+                        if 0.70 <= ratio <= 1.40:
+                            # Distance ratio preserved -> negative energy reward
+                            Q[i, j] -= pair_w * float(np.exp(-((ratio - 1.0) ** 2) / 0.10))
+                        else:
+                            # Inconsistent scale distortion -> penalty
+                            Q[i, j] += pair_w * 0.50
+
+        # Solve via configured solver
+        solve_res = self._solve(
+            Q=Q,
+            unary=conf.reshape(-1, 1),
+            pairs=np.array([[i, i] for i in range(M)]),
+            src_xy=src_xy,
+            ref_xy=ref_xy,
+        )
+
+        solution = np.asarray(solve_res.get("solution", np.zeros(M, dtype=int)), dtype=int)
+        kept_idx = np.where(solution == 1)[0]
+
+        # If solver returned all zeros, keep top-ranked match as conservative fallback
+        if len(kept_idx) == 0 and M > 0:
+            kept_idx = np.array([int(np.argmax(conf))])
+
+        filtered_src = src_xy[kept_idx]
+        filtered_ref = ref_xy[kept_idx]
+        filtered_conf = conf[kept_idx]
+        filtered_scale = scale[kept_idx] if scale is not None else None
+        filtered_angle = angle[kept_idx] if angle is not None else None
+
+        runtime_s = time.time() - t0
+
+        result = MatchResult(
+            src_xy=filtered_src,
+            ref_xy=filtered_ref,
+            confidence=filtered_conf,
+            scale=filtered_scale,
+            angle_deg=filtered_angle,
+            runtime_s=runtime_s,
+            matcher_params={
+                "matcher_id": f"qubo_{self.solver_name}_filter",
+                "solver": self.solver_name,
+                "n_vars": M,
+                "n_kept": len(kept_idx),
+                "energy": float(solve_res.get("energy", 0.0)),
+                "runtime_s": runtime_s,
+            },
+        )
+
+        info = {
+            "solver": self.solver_name,
+            "n_vars": M,
+            "n_kept": len(kept_idx),
+            "kept_fraction": float(len(kept_idx) / max(1, M)),
+            "energy": float(solve_res.get("energy", 0.0)),
+            "runtime_s": runtime_s,
+            "solution": solution.tolist(),
+        }
+
+        return result, info
 
     # ─────────────────────────────────────────────────────────────────────────
     # Implementation

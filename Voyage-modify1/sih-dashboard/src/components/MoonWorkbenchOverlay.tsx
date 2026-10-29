@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Plus, Minus, RotateCcw, Globe, GitCommit, FlaskConical,
+  Plus, Minus, RotateCcw, Globe, GitCommit, FlaskConical, Atom,
   ChevronDown, Play, Check, Sliders, Upload,
   RefreshCw, CheckCircle2, ArrowRight, AlertTriangle, X
 } from 'lucide-react';
@@ -92,8 +92,8 @@ interface MoonWorkbenchOverlayProps {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onResetView: () => void;
-  activeTab: '3d' | '2d' | 'results';
-  onTabChange: (tab: '3d' | '2d' | 'results') => void;
+  activeTab: '3d' | '2d' | 'results' | 'quantum';
+  onTabChange: (tab: '3d' | '2d' | 'results' | 'quantum') => void;
   onBackToLanding: () => void;
   onOpenTargetPalette: () => void;
   onOpenEngineInspector: () => void;
@@ -218,6 +218,18 @@ export const MoonWorkbenchOverlay: React.FC<MoonWorkbenchOverlayProps> = ({
         >
           <FlaskConical size={13} />
           <span>Findings</span>
+        </button>
+
+        <button
+          onClick={() => onTabChange('quantum')}
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full font-semibold transition-all cursor-pointer text-xs ${
+            activeTab === 'quantum'
+              ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md font-bold'
+              : 'text-cyan-300/80 hover:text-cyan-200 hover:bg-cyan-500/10'
+          }`}
+        >
+          <Atom size={13} className="text-cyan-300" />
+          <span>Quantum Lab</span>
         </button>
 
         <div className="w-px h-3.5 bg-white/20 mx-1" />
