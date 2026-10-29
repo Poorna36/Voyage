@@ -1,0 +1,165 @@
+# =============================================================================
+# configs/ohrc_nac.yaml
+# OHRC (Chandrayaan-2, 0.31 m/px) vs LRO NAC (0.5 m/px) pipeline config.
+# Inherits defaults from configs/default.yaml.
+# Values from CONFIGURATION.md — (TUNE) = validate on pilot pairs first.
+# =============================================================================
+
+extends: default
+sensor_pair: OHRC-NAC
+
+# ---------------------------------------------------------------------------
+# L0 — Data and Geometry
+# ---------------------------------------------------------------------------
+asp:
+  version_min: "3.7.0"
+  env: conda
+  isisdata: $ISISDATA
+  ck_window_days: 40
+  max_ck_size_gb: 5
+
+isisimport:
+  preserve_filename: true            # CRITICAL — isisimport depends on original ISRO name
+
+spiceinit:
+  use_csm: auto
+
+pair:
+  src_sensor: OHRC
+  ref_type: NAC
+  src_gsd_m: 0.31
+  ref_gsd_m: 0.50
+  k_pointing: 3                      # bbox padding multiplier (TUNE)
+  sigma_pointing_m: 1000             # OHRC pointing uncertainty (TUNE)
+  overlap_fraction_min: 0.5
+  geo_cell_deg: 10
+  ode_timeout_s: 30
+  reference_fallback_chain:
+    - nac_ode
+    - wac_crop
+    - selene_wmts
+  selene_status: future_compatible
+  strata:
+    lat_bins:
+      equatorial: [-45, 45]
+      midlat: [45, 60]
+      polar: [60, 90]
+    az_bins:
+      lt30: [0, 30]
+      lt60: [30, 60]
+      lt120: [60, 120]
+      gt120: [120, 180]
+    crater_density_bins:
+      low:    [0, 2]
+      medium: [2, 5]
+      high:   [5, 100]
+
+# ---------------------------------------------------------------------------
+# L1 — Preprocessing
+# ---------------------------------------------------------------------------
+preprocessing:
+  shadow_mask:
+    incidence_threshold_deg: 80      # (TUNE for polar)
+    local_variance_window: 15
+    flat_variance_threshold: 10
+    mask_min_pct: 5
+    mask_max_pct: 30
+
+  radiometric_norm:
+    percentile_clip: [2, 98]
+    stat_transfer: true
+
+  sensor_branch: ohrc_to_nac         # CLAHE + PCA
+  ohrc_to_nac:
+    clahe_clip_limit: 2.0            # (TUNE)
+    clahe_tile_grid: [8, 8]
+    pca_components: 1
+    inversion: auto
+
+  gsd:
+    interpolation_low_angle: bilinear   # incidence >= 45 deg
+    interpolation_high_angle: bicubic   # incidence < 45 deg
+    low_angle_threshold_deg: 45
+
+  tiling:
+    size_px: 512
+    overlap_px: 64
+    min_tile_fraction: 0.5
+
+# ---------------------------------------------------------------------------
+# L4 — Geometric Verification
+# ---------------------------------------------------------------------------
+verification:
+  f2_checks:
+    enabled: mandatory
+    in_domain_buffer_px: 10
+    one_to_one: strict
+
+  ransac:
+    method: degensac
+    max_iter: 10000
+    confidence: 0.99999
+    widen_on_failure: 1.5
+
+  t_gsd:
+    min_px: 0.5
+    max_px: 3.0
+    gsd_multiplier: 1.0              # t_gsd = max(0.5, gsd_ratio * 1.0) up to 3.0 px
+
+  model_ladder:
+    models: [similarity, affine, homography]
+    stop_on_rmse_below: 1.0          # (TUNE)
+
+  tilewise:
+    enabled: true
+    trigger_latitude_deg: 55
+    tile_size_px: 512
+    overlap_px: 256
+    min_inliers_per_tile: 12
+
+  gcp_declustering:
+    min_spacing_px: 20               # at base NAC GSD 0.5 m/px
+    gsd_scale: true                  # REQUIRED: scale by (ref_gsd_m / 0.5)
+    method: grid_nearest_center
+    zscore_threshold: 3.0
+    min_gcps_for_zscore: 20
+
+# ---------------------------------------------------------------------------
+# L5 — Sub-pixel Refinement
+# ---------------------------------------------------------------------------
+refinement:
+  method: ncc
+  window_px: 32
+  apodization: tukey                 # NEVER blackman
+  tukey_alpha: 0.5
+  pyramid_levels: 3
+  peak_fit: paraboloid
+  sharpness_threshold: 0.15          # tau_q — PRIORITY TUNE (v1.1 used 0.45)
+  second_peak_rejection:
+    enabled: true
+    flat_window_variance_min: 10.0   # tau_v
+    second_peak_ratio_max: 0.80
+  min_refined_fraction: 0.70
+
+# ---------------------------------------------------------------------------
+# L6 — Product Generation
+# ---------------------------------------------------------------------------
+products:
+  registered_format: GeoTIFF
+  resampling: bicubic
+  valid_warp_fraction_min: 0.90
+  qc_checkerboard_tile_px: 64
+  residual_heatmap_sigma: 3
+
+# ---------------------------------------------------------------------------
+# L7 — Evaluation
+# ---------------------------------------------------------------------------
+evaluation:
+  gt:
+    grid_size: 6
+    min_points_per_pair: 30
+    qc_reannotate_pct: 0.20
+    eval_partition: eval
+  leakage:
+    split_by: geo_cell
+    audit_required: true

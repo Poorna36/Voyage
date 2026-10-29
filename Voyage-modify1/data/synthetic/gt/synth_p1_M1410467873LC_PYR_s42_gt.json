@@ -1,0 +1,940 @@
+{
+  "pair_id": "synth_p1_M1410467873LC_PYR_s42",
+  "points": [
+    {
+      "id": 1,
+      "src_x": 1470.0,
+      "src_y": 677.0,
+      "tgt_x": 1470.547912097112,
+      "tgt_y": 676.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 3.4619834423065186
+    },
+    {
+      "id": 2,
+      "src_x": 1202.0,
+      "src_y": 1498.0,
+      "tgt_x": 1202.547912097112,
+      "tgt_y": 1497.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 3.0337939262390137
+    },
+    {
+      "id": 3,
+      "src_x": 1124.0,
+      "src_y": 853.0,
+      "tgt_x": 1124.547912097112,
+      "tgt_y": 852.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 3.0194857120513916
+    },
+    {
+      "id": 4,
+      "src_x": 728.0,
+      "src_y": 2002.0,
+      "tgt_x": 728.547912097112,
+      "tgt_y": 2001.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.925532341003418
+    },
+    {
+      "id": 5,
+      "src_x": 1350.0,
+      "src_y": 406.0,
+      "tgt_x": 1350.547912097112,
+      "tgt_y": 405.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.8535711765289307
+    },
+    {
+      "id": 6,
+      "src_x": 941.0,
+      "src_y": 2011.0,
+      "tgt_x": 941.547912097112,
+      "tgt_y": 2010.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.8518190383911133
+    },
+    {
+      "id": 7,
+      "src_x": 1350.0,
+      "src_y": 1189.0,
+      "tgt_x": 1350.547912097112,
+      "tgt_y": 1188.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.8424746990203857
+    },
+    {
+      "id": 8,
+      "src_x": 1012.0,
+      "src_y": 1398.0,
+      "tgt_x": 1012.547912097112,
+      "tgt_y": 1397.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.8374438285827637
+    },
+    {
+      "id": 9,
+      "src_x": 1576.0,
+      "src_y": 2.0,
+      "tgt_x": 1576.547912097112,
+      "tgt_y": 1.8777568795041046,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.8270673751831055
+    },
+    {
+      "id": 10,
+      "src_x": 1374.0,
+      "src_y": 586.0,
+      "tgt_x": 1374.547912097112,
+      "tgt_y": 585.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.818732500076294
+    },
+    {
+      "id": 11,
+      "src_x": 1205.0,
+      "src_y": 795.0,
+      "tgt_x": 1205.547912097112,
+      "tgt_y": 794.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.815784454345703
+    },
+    {
+      "id": 12,
+      "src_x": 939.0,
+      "src_y": 1471.0,
+      "tgt_x": 939.547912097112,
+      "tgt_y": 1470.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.8007028102874756
+    },
+    {
+      "id": 13,
+      "src_x": 1496.0,
+      "src_y": 924.0,
+      "tgt_x": 1496.547912097112,
+      "tgt_y": 923.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.7401301860809326
+    },
+    {
+      "id": 14,
+      "src_x": 801.0,
+      "src_y": 821.0,
+      "tgt_x": 801.547912097112,
+      "tgt_y": 820.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.7291977405548096
+    },
+    {
+      "id": 15,
+      "src_x": 878.0,
+      "src_y": 1472.0,
+      "tgt_x": 878.547912097112,
+      "tgt_y": 1471.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.7135496139526367
+    },
+    {
+      "id": 16,
+      "src_x": 406.0,
+      "src_y": 1682.0,
+      "tgt_x": 406.5479120971119,
+      "tgt_y": 1681.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.7060811519622803
+    },
+    {
+      "id": 17,
+      "src_x": 1059.0,
+      "src_y": 1324.0,
+      "tgt_x": 1059.547912097112,
+      "tgt_y": 1323.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.6930243968963623
+    },
+    {
+      "id": 18,
+      "src_x": 1343.0,
+      "src_y": 571.0,
+      "tgt_x": 1343.547912097112,
+      "tgt_y": 570.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.673468828201294
+    },
+    {
+      "id": 19,
+      "src_x": 594.0,
+      "src_y": 1913.0,
+      "tgt_x": 594.547912097112,
+      "tgt_y": 1912.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.6709365844726562
+    },
+    {
+      "id": 20,
+      "src_x": 1374.0,
+      "src_y": 148.0,
+      "tgt_x": 1374.547912097112,
+      "tgt_y": 147.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.6600611209869385
+    },
+    {
+      "id": 21,
+      "src_x": 1180.0,
+      "src_y": 836.0,
+      "tgt_x": 1180.547912097112,
+      "tgt_y": 835.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.6149659156799316
+    },
+    {
+      "id": 22,
+      "src_x": 1495.0,
+      "src_y": 211.0,
+      "tgt_x": 1495.547912097112,
+      "tgt_y": 210.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.6081998348236084
+    },
+    {
+      "id": 23,
+      "src_x": 1188.0,
+      "src_y": 1583.0,
+      "tgt_x": 1188.547912097112,
+      "tgt_y": 1582.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.6069438457489014
+    },
+    {
+      "id": 24,
+      "src_x": 1198.0,
+      "src_y": 749.0,
+      "tgt_x": 1198.547912097112,
+      "tgt_y": 748.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.6065900325775146
+    },
+    {
+      "id": 25,
+      "src_x": 1036.0,
+      "src_y": 1633.0,
+      "tgt_x": 1036.547912097112,
+      "tgt_y": 1632.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.60007381439209
+    },
+    {
+      "id": 26,
+      "src_x": 979.0,
+      "src_y": 1733.0,
+      "tgt_x": 979.547912097112,
+      "tgt_y": 1732.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.598174571990967
+    },
+    {
+      "id": 27,
+      "src_x": 502.0,
+      "src_y": 1810.0,
+      "tgt_x": 502.5479120971119,
+      "tgt_y": 1809.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.5900468826293945
+    },
+    {
+      "id": 28,
+      "src_x": 888.0,
+      "src_y": 1387.0,
+      "tgt_x": 888.547912097112,
+      "tgt_y": 1386.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.5789079666137695
+    },
+    {
+      "id": 29,
+      "src_x": 1206.0,
+      "src_y": 909.0,
+      "tgt_x": 1206.547912097112,
+      "tgt_y": 908.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.574270248413086
+    },
+    {
+      "id": 30,
+      "src_x": 366.0,
+      "src_y": 1679.0,
+      "tgt_x": 366.5479120971119,
+      "tgt_y": 1678.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.5633323192596436
+    },
+    {
+      "id": 31,
+      "src_x": 1326.0,
+      "src_y": 467.0,
+      "tgt_x": 1326.547912097112,
+      "tgt_y": 466.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.547227144241333
+    },
+    {
+      "id": 32,
+      "src_x": 1066.0,
+      "src_y": 758.0,
+      "tgt_x": 1066.547912097112,
+      "tgt_y": 757.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.5372819900512695
+    },
+    {
+      "id": 33,
+      "src_x": 1234.0,
+      "src_y": 1165.0,
+      "tgt_x": 1234.547912097112,
+      "tgt_y": 1164.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.5323619842529297
+    },
+    {
+      "id": 34,
+      "src_x": 1071.0,
+      "src_y": 1927.0,
+      "tgt_x": 1071.547912097112,
+      "tgt_y": 1926.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.523419141769409
+    },
+    {
+      "id": 35,
+      "src_x": 822.0,
+      "src_y": 837.0,
+      "tgt_x": 822.547912097112,
+      "tgt_y": 836.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.517451763153076
+    },
+    {
+      "id": 36,
+      "src_x": 1348.0,
+      "src_y": 1123.0,
+      "tgt_x": 1348.547912097112,
+      "tgt_y": 1122.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.506572961807251
+    },
+    {
+      "id": 37,
+      "src_x": 1146.0,
+      "src_y": 932.0,
+      "tgt_x": 1146.547912097112,
+      "tgt_y": 931.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.48751163482666
+    },
+    {
+      "id": 38,
+      "src_x": 760.0,
+      "src_y": 1837.0,
+      "tgt_x": 760.547912097112,
+      "tgt_y": 1836.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.4863858222961426
+    },
+    {
+      "id": 39,
+      "src_x": 1372.0,
+      "src_y": 1347.0,
+      "tgt_x": 1372.547912097112,
+      "tgt_y": 1346.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.4844305515289307
+    },
+    {
+      "id": 40,
+      "src_x": 1208.0,
+      "src_y": 485.0,
+      "tgt_x": 1208.547912097112,
+      "tgt_y": 484.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.4826037883758545
+    },
+    {
+      "id": 41,
+      "src_x": 1353.0,
+      "src_y": 946.0,
+      "tgt_x": 1353.547912097112,
+      "tgt_y": 945.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.435676097869873
+    },
+    {
+      "id": 42,
+      "src_x": 825.0,
+      "src_y": 1975.0,
+      "tgt_x": 825.547912097112,
+      "tgt_y": 1974.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.4313852787017822
+    },
+    {
+      "id": 43,
+      "src_x": 726.0,
+      "src_y": 1721.0,
+      "tgt_x": 726.547912097112,
+      "tgt_y": 1720.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.4230215549468994
+    },
+    {
+      "id": 44,
+      "src_x": 668.0,
+      "src_y": 2007.0,
+      "tgt_x": 668.547912097112,
+      "tgt_y": 2006.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.421294927597046
+    },
+    {
+      "id": 45,
+      "src_x": 368.0,
+      "src_y": 1934.0,
+      "tgt_x": 368.5479120971119,
+      "tgt_y": 1933.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.4210596084594727
+    },
+    {
+      "id": 46,
+      "src_x": 314.0,
+      "src_y": 1876.0,
+      "tgt_x": 314.5479120971119,
+      "tgt_y": 1875.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.4203226566314697
+    },
+    {
+      "id": 47,
+      "src_x": 1026.0,
+      "src_y": 1676.0,
+      "tgt_x": 1026.547912097112,
+      "tgt_y": 1675.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.4184346199035645
+    },
+    {
+      "id": 48,
+      "src_x": 1193.0,
+      "src_y": 1003.0,
+      "tgt_x": 1193.547912097112,
+      "tgt_y": 1002.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.414088010787964
+    },
+    {
+      "id": 49,
+      "src_x": 1489.0,
+      "src_y": 861.0,
+      "tgt_x": 1489.547912097112,
+      "tgt_y": 860.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.400205135345459
+    },
+    {
+      "id": 50,
+      "src_x": 1259.0,
+      "src_y": 264.0,
+      "tgt_x": 1259.547912097112,
+      "tgt_y": 263.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.393641471862793
+    },
+    {
+      "id": 51,
+      "src_x": 1126.0,
+      "src_y": 1693.0,
+      "tgt_x": 1126.547912097112,
+      "tgt_y": 1692.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.3882644176483154
+    },
+    {
+      "id": 52,
+      "src_x": 1182.0,
+      "src_y": 481.0,
+      "tgt_x": 1182.547912097112,
+      "tgt_y": 480.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.374929904937744
+    },
+    {
+      "id": 53,
+      "src_x": 1052.0,
+      "src_y": 1913.0,
+      "tgt_x": 1052.547912097112,
+      "tgt_y": 1912.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.3725006580352783
+    },
+    {
+      "id": 54,
+      "src_x": 1084.0,
+      "src_y": 831.0,
+      "tgt_x": 1084.547912097112,
+      "tgt_y": 830.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.358170509338379
+    },
+    {
+      "id": 55,
+      "src_x": 398.0,
+      "src_y": 1887.0,
+      "tgt_x": 398.5479120971119,
+      "tgt_y": 1886.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.355358123779297
+    },
+    {
+      "id": 56,
+      "src_x": 1310.0,
+      "src_y": 1129.0,
+      "tgt_x": 1310.547912097112,
+      "tgt_y": 1128.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.353914737701416
+    },
+    {
+      "id": 57,
+      "src_x": 814.0,
+      "src_y": 1902.0,
+      "tgt_x": 814.547912097112,
+      "tgt_y": 1901.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.3536994457244873
+    },
+    {
+      "id": 58,
+      "src_x": 408.0,
+      "src_y": 1625.0,
+      "tgt_x": 408.5479120971119,
+      "tgt_y": 1624.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.3385705947875977
+    },
+    {
+      "id": 59,
+      "src_x": 370.0,
+      "src_y": 1725.0,
+      "tgt_x": 370.5479120971119,
+      "tgt_y": 1724.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.3357346057891846
+    },
+    {
+      "id": 60,
+      "src_x": 878.0,
+      "src_y": 1081.0,
+      "tgt_x": 878.547912097112,
+      "tgt_y": 1080.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.3299596309661865
+    },
+    {
+      "id": 61,
+      "src_x": 718.0,
+      "src_y": 808.0,
+      "tgt_x": 718.547912097112,
+      "tgt_y": 807.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.329028844833374
+    },
+    {
+      "id": 62,
+      "src_x": 935.0,
+      "src_y": 806.0,
+      "tgt_x": 935.547912097112,
+      "tgt_y": 805.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.3255200386047363
+    },
+    {
+      "id": 63,
+      "src_x": 712.0,
+      "src_y": 1868.0,
+      "tgt_x": 712.547912097112,
+      "tgt_y": 1867.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.321528911590576
+    },
+    {
+      "id": 64,
+      "src_x": 1168.0,
+      "src_y": 1884.0,
+      "tgt_x": 1168.547912097112,
+      "tgt_y": 1883.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.319136142730713
+    },
+    {
+      "id": 65,
+      "src_x": 920.0,
+      "src_y": 1787.0,
+      "tgt_x": 920.547912097112,
+      "tgt_y": 1786.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.318181276321411
+    },
+    {
+      "id": 66,
+      "src_x": 1158.0,
+      "src_y": 1700.0,
+      "tgt_x": 1158.547912097112,
+      "tgt_y": 1699.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.3042876720428467
+    },
+    {
+      "id": 67,
+      "src_x": 556.0,
+      "src_y": 1865.0,
+      "tgt_x": 556.547912097112,
+      "tgt_y": 1864.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2973363399505615
+    },
+    {
+      "id": 68,
+      "src_x": 720.0,
+      "src_y": 1003.0,
+      "tgt_x": 720.547912097112,
+      "tgt_y": 1002.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2957024574279785
+    },
+    {
+      "id": 69,
+      "src_x": 981.0,
+      "src_y": 1666.0,
+      "tgt_x": 981.547912097112,
+      "tgt_y": 1665.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2955615520477295
+    },
+    {
+      "id": 70,
+      "src_x": 1400.0,
+      "src_y": 192.0,
+      "tgt_x": 1400.547912097112,
+      "tgt_y": 191.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2719459533691406
+    },
+    {
+      "id": 71,
+      "src_x": 1126.0,
+      "src_y": 1974.0,
+      "tgt_x": 1126.547912097112,
+      "tgt_y": 1973.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2644877433776855
+    },
+    {
+      "id": 72,
+      "src_x": 571.0,
+      "src_y": 1846.0,
+      "tgt_x": 571.547912097112,
+      "tgt_y": 1845.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.264263391494751
+    },
+    {
+      "id": 73,
+      "src_x": 1464.0,
+      "src_y": 442.0,
+      "tgt_x": 1464.547912097112,
+      "tgt_y": 441.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.263231039047241
+    },
+    {
+      "id": 74,
+      "src_x": 1271.0,
+      "src_y": 796.0,
+      "tgt_x": 1271.547912097112,
+      "tgt_y": 795.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.258945941925049
+    },
+    {
+      "id": 75,
+      "src_x": 1383.0,
+      "src_y": 1437.0,
+      "tgt_x": 1383.547912097112,
+      "tgt_y": 1436.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2564802169799805
+    },
+    {
+      "id": 76,
+      "src_x": 539.0,
+      "src_y": 1489.0,
+      "tgt_x": 539.547912097112,
+      "tgt_y": 1488.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.24837589263916
+    },
+    {
+      "id": 77,
+      "src_x": 1218.0,
+      "src_y": 275.0,
+      "tgt_x": 1218.547912097112,
+      "tgt_y": 274.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2481298446655273
+    },
+    {
+      "id": 78,
+      "src_x": 1176.0,
+      "src_y": 1243.0,
+      "tgt_x": 1176.547912097112,
+      "tgt_y": 1242.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2470622062683105
+    },
+    {
+      "id": 79,
+      "src_x": 1665.0,
+      "src_y": 93.0,
+      "tgt_x": 1665.547912097112,
+      "tgt_y": 92.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.241361141204834
+    },
+    {
+      "id": 80,
+      "src_x": 1115.0,
+      "src_y": 1784.0,
+      "tgt_x": 1115.547912097112,
+      "tgt_y": 1783.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2387452125549316
+    },
+    {
+      "id": 81,
+      "src_x": 1355.0,
+      "src_y": 679.0,
+      "tgt_x": 1355.547912097112,
+      "tgt_y": 678.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2358994483947754
+    },
+    {
+      "id": 82,
+      "src_x": 850.0,
+      "src_y": 1967.0,
+      "tgt_x": 850.547912097112,
+      "tgt_y": 1966.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.219829559326172
+    },
+    {
+      "id": 83,
+      "src_x": 990.0,
+      "src_y": 970.0,
+      "tgt_x": 990.547912097112,
+      "tgt_y": 969.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2145512104034424
+    },
+    {
+      "id": 84,
+      "src_x": 1554.0,
+      "src_y": 478.0,
+      "tgt_x": 1554.547912097112,
+      "tgt_y": 477.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2136898040771484
+    },
+    {
+      "id": 85,
+      "src_x": 799.0,
+      "src_y": 1946.0,
+      "tgt_x": 799.547912097112,
+      "tgt_y": 1945.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2108259201049805
+    },
+    {
+      "id": 86,
+      "src_x": 1132.0,
+      "src_y": 536.0,
+      "tgt_x": 1132.547912097112,
+      "tgt_y": 535.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.208954095840454
+    },
+    {
+      "id": 87,
+      "src_x": 830.0,
+      "src_y": 1299.0,
+      "tgt_x": 830.547912097112,
+      "tgt_y": 1298.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.2033493518829346
+    },
+    {
+      "id": 88,
+      "src_x": 1357.0,
+      "src_y": 1269.0,
+      "tgt_x": 1357.547912097112,
+      "tgt_y": 1268.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.199786901473999
+    },
+    {
+      "id": 89,
+      "src_x": 585.0,
+      "src_y": 1809.0,
+      "tgt_x": 585.547912097112,
+      "tgt_y": 1808.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.196302652359009
+    },
+    {
+      "id": 90,
+      "src_x": 1255.0,
+      "src_y": 741.0,
+      "tgt_x": 1255.547912097112,
+      "tgt_y": 740.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.1899070739746094
+    },
+    {
+      "id": 91,
+      "src_x": 1471.0,
+      "src_y": 730.0,
+      "tgt_x": 1471.547912097112,
+      "tgt_y": 729.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.1868784427642822
+    },
+    {
+      "id": 92,
+      "src_x": 1170.0,
+      "src_y": 373.0,
+      "tgt_x": 1170.547912097112,
+      "tgt_y": 372.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.1868503093719482
+    },
+    {
+      "id": 93,
+      "src_x": 1306.0,
+      "src_y": 1145.0,
+      "tgt_x": 1306.547912097112,
+      "tgt_y": 1144.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.185105800628662
+    },
+    {
+      "id": 94,
+      "src_x": 971.0,
+      "src_y": 1274.0,
+      "tgt_x": 971.547912097112,
+      "tgt_y": 1273.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.1827750205993652
+    },
+    {
+      "id": 95,
+      "src_x": 1541.0,
+      "src_y": 187.0,
+      "tgt_x": 1541.547912097112,
+      "tgt_y": 186.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.166750907897949
+    },
+    {
+      "id": 96,
+      "src_x": 609.0,
+      "src_y": 1883.0,
+      "tgt_x": 609.547912097112,
+      "tgt_y": 1882.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.160510301589966
+    },
+    {
+      "id": 97,
+      "src_x": 1372.0,
+      "src_y": 5.0,
+      "tgt_x": 1372.547912097112,
+      "tgt_y": 4.877756879504105,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.136078119277954
+    },
+    {
+      "id": 98,
+      "src_x": 977.0,
+      "src_y": 1968.0,
+      "tgt_x": 977.547912097112,
+      "tgt_y": 1967.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.134371280670166
+    },
+    {
+      "id": 99,
+      "src_x": 1002.0,
+      "src_y": 1516.0,
+      "tgt_x": 1002.547912097112,
+      "tgt_y": 1515.8777568795042,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.1330015659332275
+    },
+    {
+      "id": 100,
+      "src_x": 1358.0,
+      "src_y": 824.0,
+      "tgt_x": 1358.547912097112,
+      "tgt_y": 823.8777568795041,
+      "feature_class": "shi_tomasi",
+      "gradient_magnitude": 2.1260111331939697
+    }
+  ],
+  "n_gt": 100,
+  "transform_params": {
+    "pair_id": "synth_p1_M1410467873LC_PYR_s42",
+    "random_seed": 42,
+    "scale_factor": 1.0,
+    "rotation_deg": 0.0,
+    "translation_px": [
+      0.5479120971119267,
+      -0.12224312049589536
+    ],
+    "interpolation": "lanczos",
+    "illumination_gamma": 1.0,
+    "shadow_extension_factor": 1.0,
+    "mtf_blur_sigma": 0.0,
+    "pushbroom_stripe_amplitude": 0.0,
+    "transform_matrix": [
+      [
+        1.0,
+        0.0,
+        0.5479120971119267
+      ],
+      [
+        -0.0,
+        1.0,
+        -0.12224312049589536
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "anchor_extraction_phase": 1,
+  "created_at": "2026-09-02T19:14:57.470857+00:00"
+}

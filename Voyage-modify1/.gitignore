@@ -1,0 +1,89 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+.conda/
+
+# Environment variables and local secrets
+.env
+.env.*
+*.env
+*.env.local
+*.env.*
+!.env.example
+!.env.*.example
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data & results directories (ignore large binaries, track placeholders)
+data/raw/*
+data/calibrated/*
+data/reference/nac/*
+data/reference/wac/*
+data/pairs/*
+data/processed/*
+data/scratch/*
+data/metadata/gt/*
+results/*
+
+# Explicitly track directory placeholders and essential metadata
+!.gitkeep
+!data/metadata/roi_manifest.csv
+
+# Large Datasets, Images & Sensor Binaries (Safety fallback)
+*.IMG
+*.img
+*.TIF
+*.tif
+*.cub
+*.zip
+*.qub
+*.jsonl
+*.tar
+*.tar.gz
+
+# Raw ISRO Chandrayaan product directories (in root or subdirs)
+ch1_*
+ch2_*
+
+# SPICE Kernels & Navigation files
+*.bc
+*.bsp
+*.tpc
+*.ti
+
+# Deep Learning weights & models
+*.pt
+*.pth
+*.onnx
+dataset/
+runs/
+.config/
+weights/
+!models/crater_yolov9.pt
+
+# Internal drafts & ignored compendiums
+ARCHITECTURE/
+ALL_IN_ONE_*.md
+BEST_ARCHITECTURE_KNOWN.md
+# Node / Frontend build artifacts
+node_modules/
+dist/
+dist-ssr/

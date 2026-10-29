@@ -1,0 +1,353 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  background-color: #07080A;
+  color: #F3F4F6;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans', 'Roboto', 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at 50% 0%, #11131A 0%, #07080A 75%);
+  color: #F3F4F6;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Custom Aerospace Scrollbar */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 3px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: rgba(7, 8, 10, 0.8);
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(41, 151, 255, 0.6);
+}
+
+/* Aerospace Glass Cards (Matches Landing Page) */
+.panel-card {
+  background: rgba(10, 10, 12, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 0.75rem 0.85rem;
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.7);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.panel-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(41, 151, 255, 0.4), transparent);
+}
+
+.panel-card:hover {
+  background: rgba(15, 16, 20, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 28px -2px rgba(0, 0, 0, 0.8);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #FFFFFF;
+  margin-bottom: 0.4rem;
+  font-family: inherit;
+}
+
+/* Cesium Custom Overrides */
+.cesium-viewer {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: #07080A !important;
+}
+
+.cesium-viewer-bottom {
+  display: none !important;
+}
+
+.cesium-widget canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Ground-mode overlay fade in ── */
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Crater inspector smooth slide-up ── */
+@keyframes slideUpInspector {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.inspector-enter {
+  animation: slideUpInspector 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Tabular numbers for heading counter ── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Smooth Cesium flyTo feel — prevent canvas flicker on render ── */
+.cesium-widget canvas {
+  image-rendering: auto;
+  will-change: transform;
+}
+
+/* ── Orbital HUD Dashed Ellipse Keyframes ── */
+@keyframes orbitalRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-orbit-slow {
+  animation: orbitalRotate 60s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: orbitalRotate 45s linear infinite reverse;
+}
+
+/* ── MAGNETIC & ULTRA-REACTIVE BUTTON PHYSICS ── */
+button,
+[role="button"],
+.btn-reactive,
+.magnetic-btn {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  transform-style: preserve-3d;
+  box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.2s ease,
+              border-color 0.2s ease,
+              filter 0.2s ease;
+  will-change: transform, box-shadow;
+  transform-origin: center center;
+}
+
+button:hover:not(:disabled),
+[role="button"]:hover,
+.magnetic-btn:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.7), 0 0 16px 2px rgba(212, 197, 154, 0.35);
+}
+
+button:active:not(:disabled),
+[role="button"]:active,
+.magnetic-btn:active {
+  transform: scale(0.96) !important;
+  filter: brightness(0.92);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(212, 197, 154, 0.5);
+  transition: transform 0.08s ease !important;
+}
+
+/* LUNARIS Champagne Gold Solid Action Button */
+.btn-lunaris-gold {
+  background: #D4C59A;
+  color: #0A0B0E;
+  font-weight: 800;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 20px rgba(212, 197, 154, 0.35);
+  transition: all 0.2s ease;
+}
+
+.btn-lunaris-gold:hover:not(:disabled) {
+  background: #EBE2CD;
+  box-shadow: 0 0 25px rgba(212, 197, 154, 0.55), 0 4px 15px rgba(0,0,0,0.6);
+  transform: translateY(-1px);
+}
+
+/* Pill / Outline Button */
+.btn-lunaris-outline {
+  background: rgba(13, 14, 18, 0.6);
+  border: 1px solid rgba(212, 197, 154, 0.35);
+  color: #EBE2CD;
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+}
+
+.btn-lunaris-outline:hover:not(:disabled) {
+  background: rgba(212, 197, 154, 0.15);
+  border-color: rgba(212, 197, 154, 0.65);
+  color: #FFFFFF;
+  box-shadow: 0 0 15px rgba(212, 197, 154, 0.25);
+}
+
+/* ── LUNARIS Landing Page Typography & Utilities ── */
+.font-headline,
+.font-unbounded {
+  font-family: 'Unbounded', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: 0.02em;
+}
+
+.font-subheading,
+.font-editorial,
+.font-cursive,
+.font-serif-italic {
+  font-family: 'Instrument Serif', Georgia, serif !important;
+  font-style: italic !important;
+  letter-spacing: 0.01em;
+}
+
+.font-mono-tech {
+  font-family: 'IBM Plex Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-feature-settings: "zero", "ss01", "ss02";
+}
+
+.border-subtle {
+  border-color: rgba(231, 227, 217, 0.09);
+}
+
+.border-subtle-gold {
+  border-color: rgba(214, 195, 139, 0.25);
+}
+
+.lunar-grain {
+  background-image: radial-gradient(rgba(214, 195, 139, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.lunar-noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+.grid-lines-lunar {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(231, 227, 217, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(231, 227, 217, 0.02) 1px, transparent 1px);
+}
+
+@keyframes moonCinematicZoom {
+  0% {
+    transform: scale(1.0);
+  }
+  100% {
+    transform: scale(1.18);
+  }
+}
+
+.animate-moon-zoom-continuous {
+  animation: moonCinematicZoom 22s ease-in-out infinite alternate;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 90s linear infinite;
+}
+
+@keyframes orbitFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(1.2deg);
+  }
+}
+
+.animate-orbit-float {
+  animation: orbitFloat 6s ease-in-out infinite;
+}
+
+/* ── ECLIPSE INDIVIDUAL INTERACTIVE LETTER BUTTONS ── */
+.eclipse-letter-btn {
+  display: inline-block;
+  color: #D6C38B;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0 0.03em;
+  margin: 0;
+  cursor: pointer;
+  text-shadow: none;
+  transform-origin: center bottom;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease, text-shadow 0.2s ease;
+  user-select: none;
+}
+
+.eclipse-letter-btn:hover {
+  color: #FFFFFF !important;
+  transform: scale(1.22);
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.95),
+    0 0 22px #F59E0B,
+    0 0 45px #D97706,
+    0 0 70px rgba(245, 158, 11, 0.75);
+}
+
+/* ── SMOOTH RESULTS & VIEWPORT TRANSITIONS ── */
+@keyframes resultsSlideFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+.animate-results-enter {
+  animation: resultsSlideFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+/* ── REAL ATMOSPHERIC NIGHT SKY SHIMMER (Stars stay 100% visible) ── */
+@keyframes realSkyAtmosphericShimmer {
+  0%, 100% {
+    opacity: 0.84;
+    filter: brightness(0.96) contrast(1.05);
+  }
+  50% {
+    opacity: 0.98;
+    filter: brightness(1.10) contrast(1.08);
+  }
+}
+
+.animate-real-starfield {
+  animation: realSkyAtmosphericShimmer 7s ease-in-out infinite;
+  will-change: opacity, filter;
+}
+
+
+
+

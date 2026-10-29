@@ -1,0 +1,29 @@
+# =============================================================================
+# configs/matchers_sift.yaml
+# Sift-only registry — used for the compact S4-S9 pilot loop (checklist item 7-9).
+# =============================================================================
+sift:
+  enabled: true
+  always_run: true
+  nfeatures: 0
+  noctave_layers: 3
+  contrast_threshold: 0.04
+  edge_threshold: 10
+  sigma: 1.6
+  lowe_ratio: 0.75
+  anms:
+    enabled: true
+    budget: 2000
+    method: ssc
+
+selection:
+  confidence_filter:
+    sift: 0.0
+  grid:
+    n_rows: 8
+    n_cols: 8
+    cap_per_cell: 5
+  budget: 250
+  min_matches_after_selection: 25
+  coverage_min: 0.60
+  conflict_resolution: highest_confidence

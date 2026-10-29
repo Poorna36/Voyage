@@ -1,0 +1,179 @@
+# =============================================================================
+# configs/tmc_wac.yaml
+# TMC-2 (Chandrayaan-2, 5 m/px) vs LRO WAC 643nm (100 m/px) pipeline config.
+# Inherits defaults from configs/default.yaml.
+#
+# NOTE: TMC-2 → WAC preprocessing branch is EXPERIMENTAL and unconfirmed
+# by any published paper in the research corpus (ARCHITECTURE.md §8 item 6).
+# A/B test this branch vs. minimal preprocessing. Do not treat as validated.
+# TMC-2–WAC shortfall does NOT fail the overall system — reported separately.
+# =============================================================================
+
+extends: default
+sensor_pair: TMC-2-WAC
+
+# ---------------------------------------------------------------------------
+# L0 — Data and Geometry
+# ---------------------------------------------------------------------------
+asp:
+  version_min: "3.7.0"
+  env: conda
+  isisdata: $ISISDATA
+  ck_window_days: 40
+  max_ck_size_gb: 5
+
+isisimport:
+  preserve_filename: true
+
+spiceinit:
+  use_csm: auto
+
+pair:
+  src_sensor: TMC-2
+  ref_type: WAC
+  src_gsd_m: 5.0
+  ref_gsd_m: 100.0                   # WAC 643nm global mosaic
+  k_pointing: 3
+  sigma_pointing_m: 2000             # TMC-2 pointing uncertainty (TUNE)
+  overlap_fraction_min: 0.5
+  geo_cell_deg: 10
+  wac_reference: data/reference/wac_643nm.tif
+  ode_timeout_s: 30
+  reference_fallback_chain:
+    - wac_crop
+    - nac_ode
+    - selene_wmts
+  selene_status: future_compatible
+  strata:
+    lat_bins:
+      equatorial: [-45, 45]
+      midlat: [45, 60]
+      polar: [60, 90]
+    az_bins:
+      lt30: [0, 30]
+      lt60: [30, 60]
+      lt120: [60, 120]
+      gt120: [120, 180]
+    crater_density_bins:
+      low:    [0, 2]
+      medium: [2, 5]
+      high:   [5, 100]
+
+# ---------------------------------------------------------------------------
+# L1 — Preprocessing (EXPERIMENTAL BRANCH)
+# ---------------------------------------------------------------------------
+preprocessing:
+  shadow_mask:
+    incidence_threshold_deg: 80
+    local_variance_window: 15
+    flat_variance_threshold: 10
+    mask_min_pct: 5
+    mask_max_pct: 30
+
+  radiometric_norm:
+    percentile_clip: [2, 98]
+    stat_transfer: true
+
+  # EXPERIMENTAL: A/B test vs minimal (only percentile_clip)
+  sensor_branch: tmc_to_wac
+  tmc_to_wac:
+    histogram_match: true
+    clahe_clip_limit: 1.5            # (TUNE)
+    clahe_tile_grid: [8, 8]
+    ab_test_vs_minimal: true         # run both and compare in leaderboard
+
+  gsd:
+    interpolation_low_angle: bilinear
+    interpolation_high_angle: bicubic
+    low_angle_threshold_deg: 45
+
+  tiling:
+    size_px: 512
+    overlap_px: 64
+    min_tile_fraction: 0.5
+
+# ---------------------------------------------------------------------------
+# L4 — Geometric Verification
+# GSD ratio TMC/WAC = 5/100 = 0.05 → t_gsd = max(0.5, 0.05) = 0.5 px
+# GCP min_spacing_px scales to: 20 * (100/0.5) = 4000 px (WAC resolution)
+# ---------------------------------------------------------------------------
+verification:
+  f2_checks:
+    enabled: mandatory
+    in_domain_buffer_px: 10
+    one_to_one: strict
+
+  ransac:
+    method: degensac
+    max_iter: 10000
+    confidence: 0.99999
+    widen_on_failure: 1.5
+
+  t_gsd:
+    min_px: 0.5
+    max_px: 3.0
+    gsd_multiplier: 1.0
+
+  model_ladder:
+    models: [similarity, affine, homography]
+    stop_on_rmse_below: 1.0
+
+  tilewise:
+    enabled: true
+    trigger_latitude_deg: 55
+    tile_size_px: 512
+    overlap_px: 256
+    min_inliers_per_tile: 12
+
+  gcp_declustering:
+    min_spacing_px: 20
+    gsd_scale: true                  # base_gsd_m = 0.5 → scale factor = 100/0.5 = 200x → ~4000 px
+    method: grid_nearest_center
+    zscore_threshold: 3.0
+    min_gcps_for_zscore: 20
+
+# ---------------------------------------------------------------------------
+# L5 — Sub-pixel Refinement
+# ---------------------------------------------------------------------------
+refinement:
+  method: ncc
+  window_px: 32
+  apodization: tukey
+  tukey_alpha: 0.5
+  pyramid_levels: 3
+  peak_fit: paraboloid
+  sharpness_threshold: 0.15          # (TUNE — may need relaxing at WAC resolution)
+  second_peak_rejection:
+    enabled: true
+    flat_window_variance_min: 10.0
+    second_peak_ratio_max: 0.80
+  min_refined_fraction: 0.70
+
+# ---------------------------------------------------------------------------
+# L6 — Product Generation
+# ---------------------------------------------------------------------------
+products:
+  registered_format: GeoTIFF
+  resampling: bicubic
+  valid_warp_fraction_min: 0.90
+  qc_checkerboard_tile_px: 64
+  residual_heatmap_sigma: 3
+
+# ---------------------------------------------------------------------------
+# L7 — Evaluation
+# NOTE: TMC-2–WAC reported in a separate leaderboard stratum.
+# A shortfall here does NOT fail the overall system (VALIDATION.md §5).
+# Stretch target: RMSE < 1.5 px.
+# ---------------------------------------------------------------------------
+evaluation:
+  gt:
+    grid_size: 6
+    min_points_per_pair: 30
+    qc_reannotate_pct: 0.20
+    eval_partition: eval
+  leakage:
+    split_by: geo_cell
+    audit_required: true
+  reporting:
+    separate_stratum: true           # never merged with OHRC-NAC results
+    experimental_label: "TMC-2-WAC (experimental — unvalidated branch)"

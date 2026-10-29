@@ -1,0 +1,82 @@
+{
+  "model_version": "msm_v1",
+  "n_samples": 52,
+  "n_features": 13,
+  "feature_names": [
+    "sensor_pair_enc",
+    "gsd_ratio",
+    "latitude_abs",
+    "delta_solar_azimuth",
+    "terrain_class_enc",
+    "crater_density",
+    "masked_fraction",
+    "overlap_fraction",
+    "src_texture_contrast",
+    "ref_texture_contrast",
+    "src_mean_gradient",
+    "ref_mean_gradient",
+    "tile_count"
+  ],
+  "n_classes": 4,
+  "class_names": [
+    "sift",
+    "rift2",
+    "lightglue",
+    "crater"
+  ],
+  "cv_splits": 5,
+  "cv_mean_accuracy": 0.8855,
+  "cv_mean_top2_accuracy": 0.94,
+  "fold_accuracies": [
+    1.0,
+    0.7273,
+    0.7,
+    1.0,
+    1.0
+  ],
+  "fold_top2_accuracies": [
+    1.0,
+    1.0,
+    0.7,
+    1.0,
+    1.0
+  ],
+  "feature_importance_split": {
+    "sensor_pair_enc": 0.0,
+    "gsd_ratio": 152.0,
+    "latitude_abs": 473.0,
+    "delta_solar_azimuth": 153.0,
+    "terrain_class_enc": 63.0,
+    "crater_density": 243.0,
+    "masked_fraction": 0.0,
+    "overlap_fraction": 3.0,
+    "src_texture_contrast": 0.0,
+    "ref_texture_contrast": 0.0,
+    "src_mean_gradient": 0.0,
+    "ref_mean_gradient": 0.0,
+    "tile_count": 0.0
+  },
+  "feature_importance_gain": {
+    "sensor_pair_enc": 0.0,
+    "gsd_ratio": 21.3938,
+    "latitude_abs": 545.2366,
+    "delta_solar_azimuth": 96.4538,
+    "terrain_class_enc": 1.0238,
+    "crater_density": 99.6635,
+    "masked_fraction": 0.0,
+    "overlap_fraction": 0.227,
+    "src_texture_contrast": 0.0,
+    "ref_texture_contrast": 0.0,
+    "src_mean_gradient": 0.0,
+    "ref_mean_gradient": 0.0,
+    "tile_count": 0.0
+  },
+  "geo_cell_leakage_audit": "PASSED (0 overlap between CV folds)",
+  "provenance": {
+    "config_hash": "99914b932bd37a50b983c5e7c90ae93b",
+    "code_commit": "unknown",
+    "matcher_params_hash": "99914b932bd37a50b983c5e7c90ae93b",
+    "created_at": "2026-10-29T16:04:34Z",
+    "seed": 42
+  }
+}

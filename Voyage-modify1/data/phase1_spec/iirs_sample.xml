@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-model href="https://isda.issdc.gov.in/pds4/isda/v1/ch2_ldd_ISDA_1000.sch" schematypens="http://purl.oclc.org/dsdl/schematron" ?>
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:disp="http://pds.nasa.gov/pds4/disp/v1" xmlns:isda="https://isda.issdc.gov.in/pds4/isda/v1" xmlns:pds="http://pds.nasa.gov/pds4/pds/v1" xmlns:sp="http://pds.nasa.gov/pds4/sp/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1B00.xsd http://pds.nasa.gov/pds4/disp/v1 http://pds.nasa.gov/pds4/disp/v1/PDS4_DISP_1301.xsd http://pds.nasa.gov/pds4/sp/v1 http://pds.nasa.gov/pds4/sp/v1/PDS4_SP_1100.xsd https://isda.issdc.gov.in/pds4/isda/v1 https://isda.issdc.gov.in/pds4/isda/v1/ch2_ldd_ISDA_1000.xsd">
+    <Identification_Area>
+        <logical_identifier>urn:isro:isda:ch2_cho.iir:data_raw:ch2_iir_nri_20210620t2058297275_d_img_hw1</logical_identifier>
+        <version_id>1.0</version_id>
+        <title>Chandrayaan-2 Orbiter IIRS Experiment</title>
+        <information_model_version>1.11.0.0</information_model_version>
+        <product_class>Product_Observational</product_class>
+    </Identification_Area>
+    <Observation_Area>
+        <Time_Coordinates>
+            <start_date_time>2021-06-20T20:58:29.7275Z</start_date_time>
+            <stop_date_time>2021-06-20T21:10:50.5598Z</stop_date_time>
+        </Time_Coordinates>
+        <Primary_Result_Summary>
+            <purpose>Science</purpose>
+            <processing_level>Raw</processing_level>
+        </Primary_Result_Summary>
+        <Investigation_Area>
+            <name>Chandrayaan-2</name>
+            <type>Mission</type>
+        </Investigation_Area>
+        <Observing_System>
+            <Observing_System_Component>
+                <name>Chandrayaan 2 Orbiter</name>
+                <type>Spacecraft</type>
+            </Observing_System_Component>
+            <Observing_System_Component>
+                <name>imaging infrared spectrometer</name>
+                <type>Instrument</type>
+            </Observing_System_Component>
+        </Observing_System>
+        <Target_Identification>
+            <name>Moon</name>
+            <type>Satellite</type>
+        </Target_Identification>
+        <Mission_Area>
+            <isda:Product_Parameters>
+                <isda:job_id>IIRXXHW1CHO0812302NNNN21172064322921_V2_1</isda:job_id>
+                <isda:level0_dir_name>IIRXXHW1CHO0812302NNNN21172064322921_V2_1</isda:level0_dir_name>
+                <isda:imaging_orbit_number>8118</isda:imaging_orbit_number>
+                <isda:dumping_orbit_number>8123</isda:dumping_orbit_number>
+                <isda:line_exposure_duration unit="ms">53.060</isda:line_exposure_duration>
+                <isda:gain>g2</isda:gain>
+                <isda:exposure>e1</isda:exposure>
+                <isda:detector_pixel_width unit="micrometer">30</isda:detector_pixel_width>
+                <isda:focal_length unit="mm">74.999</isda:focal_length>
+                <isda:spacecraft_altitude unit="km">118.07</isda:spacecraft_altitude>
+                <isda:pixel_resolution unit="m/pixel">94.46</isda:pixel_resolution>
+                <isda:roll unit="deg">-9.088267</isda:roll>
+                <isda:pitch unit="deg">-0.344765</isda:pitch>
+                <isda:yaw unit="deg">-0.056928</isda:yaw>
+                <isda:sun_azimuth unit="deg">182.207836</isda:sun_azimuth>
+                <isda:sun_elevation unit="deg">43.076695</isda:sun_elevation>
+                <isda:solar_incidence unit="deg">46.923305</isda:solar_incidence>
+                <isda:projection>Selenographic</isda:projection>
+                <isda:area>Equatorial</isda:area>
+            </isda:Product_Parameters>
+            <isda:Geometry_Parameters>
+                <isda:System_Level_Coordinates>
+                    <isda:upper_left_latitude unit="deg">65.830273</isda:upper_left_latitude>
+                    <isda:upper_left_longitude unit="deg">48.773765</isda:upper_left_longitude>
+                    <isda:upper_right_latitude unit="deg">65.876063</isda:upper_right_latitude>
+                    <isda:upper_right_longitude unit="deg">50.465734</isda:upper_right_longitude>
+                    <isda:lower_left_latitude unit="deg">28.479378</isda:lower_left_latitude>
+                    <isda:lower_left_longitude unit="deg">50.843757</isda:lower_left_longitude>
+                    <isda:lower_right_latitude unit="deg">28.507317</isda:lower_right_latitude>
+                    <isda:lower_right_longitude unit="deg">51.754390</isda:lower_right_longitude>
+                </isda:System_Level_Coordinates>
+            </isda:Geometry_Parameters>
+        </Mission_Area>
+    </Observation_Area>
+    <File_Area_Observational>
+        <File>
+            <file_name>ch2_iir_nri_20210620T2058297275_d_img_hw1.qub</file_name>
+            <creation_date_time>2022-07-16T09:09:24</creation_date_time>
+            <file_size unit="byte">1787520000</file_size>
+            <md5_checksum>b4d0e67d400913b17b846a0a64fd81f1</md5_checksum>
+        </File>
+        <Array_3D_Spectrum>
+            <name>IIRS Image Cube</name>
+            <local_identifier>SPECTRAL_QUBE_OBJECT</local_identifier>
+            <offset unit="byte">0</offset>
+            <axes>3</axes>
+            <axis_index_order>Last Index Fastest</axis_index_order>
+            <Element_Array>
+                <data_type>UnsignedLSB2</data_type>
+            </Element_Array>
+            <Axis_Array>
+                <axis_name>BAND</axis_name>
+                <elements>256</elements>
+                <sequence_number>1</sequence_number>
+                <Band_Bin_Set>
+                    <Band_Bin>
+                        <band_number>1</band_number>
+                        <band_width unit="nm">19.8</band_width>
+                        <center_wavelength unit="nm">712.3</center_wavelength>
+                    </Band_Bin>
+                    <Band_Bin>
+                        <band_number>2</band_number>
+                        <band_width unit="nm">19.9</band_width>
+                        <center_wavelength unit="nm">729.2</center_wavelength>
+                    </Band_Bin>
+                </Band_Bin_Set>
+            </Axis_Array>
+        </Array_3D_Spectrum>
+    </File_Area_Observational>
+</Product_Observational>

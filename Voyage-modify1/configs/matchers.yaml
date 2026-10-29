@@ -1,0 +1,129 @@
+# =============================================================================
+# configs/matchers.yaml
+# Matcher registry and arbitration policy.
+# Values from CONFIGURATION.md §4 — DO NOT change without research justification.
+# Parameters marked (TUNE) require empirical validation on real lunar pilot data.
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# M0: SIFT — always-on baseline and fallback of last resort
+# ---------------------------------------------------------------------------
+sift:
+  enabled: true
+  always_run: true                   # runs on 100% of pairs regardless of arbitration
+  nfeatures: 0                       # 0 = unlimited before ANMS
+  noctave_layers: 3
+  contrast_threshold: 0.04
+  edge_threshold: 10
+  sigma: 1.6
+  lowe_ratio: 0.75                   # Lowe (2004) standard
+  anms:
+    enabled: true
+    budget: 2000                     # (TUNE on pilot pairs)
+    method: ssc                      # Suppression via Square Covering
+
+# ---------------------------------------------------------------------------
+# M1a: RIFT2 + multi-octave scale-space extension
+# ---------------------------------------------------------------------------
+rift2:
+  enabled: true
+  num_scales: 4                      # Ns — log-Gabor bank scales
+  num_orientations: 6                # No — log-Gabor orientations; multi-MIM = No × descriptor cost
+  scale_space_octaves: 4             # our extension: multi-octave for scale invariance (D08 novelty)
+  pc_threshold: 0.1                  # phase congruency keypoint threshold (TUNE)
+  mim_size: 96                       # descriptor spatial support J
+  max_runtime_per_tile_s: 120        # flag if exceeded
+  scale_consistency_filter:
+    enabled: true                    # MANDATORY — implements D08 scale-space novelty
+    max_log_scale_deviation: 0.3     # reject if |log(scale_src/scale_ref) - log(gsd_ratio)| > this
+  anms:
+    enabled: true
+    budget: 1500
+    method: ssc
+  polar_validated: false             # RIFT2 fails on OHRC-NAC Polar (Traditional_vs_DL paper)
+  # For CPU-only + polar + low-crater-density: flag no_validated_primary_matcher=true
+
+# ---------------------------------------------------------------------------
+# M1b: LNIFT — pilot benchmark alongside RIFT2
+# ---------------------------------------------------------------------------
+lnift:
+  enabled: true
+  role: m1b_pilot                    # benchmark against rift2; promote to primary M1 if it wins
+  scale_consistency_filter:
+    enabled: true
+    max_log_scale_deviation: 0.3
+  anms:
+    enabled: true
+    budget: 1500
+    method: ssc
+  # Per supplementary_research: ~100x faster than RIFT, 99.9% SR vs 79.85% for RIFT2
+
+# ---------------------------------------------------------------------------
+# M2: SuperPoint + LightGlue
+# ---------------------------------------------------------------------------
+lightglue:
+  enabled: true
+  backbone: superpoint
+  max_keypoints: 2048                # reduce to 1024 on CPU-only runs
+  match_threshold: 0.0               # LightGlue confidence handles filtering
+  depth_confidence: 0.95
+  width_confidence: 0.99
+  requires_gpu: true                 # preferred; cpu_fallback activates automatically
+  cpu_fallback: true                 # M2 eligible on CPU — GPU affects runtime ONLY, not eligibility
+  f2_checks: mandatory               # in-domain bounds + one-to-one — NEVER disable
+
+# ---------------------------------------------------------------------------
+# M3: Crater-geometry (CNSFM-style)
+# ---------------------------------------------------------------------------
+crater:
+  enabled: true
+  detector: yolov9                   # transfer-learned from LROC NAC @ 0.5 m/px
+  min_crater_diameter_px: 8
+  crater_density_gate: 3.0          # tau_c in craters/km² — BOTH images must exceed (TUNE)
+  crater_density_unit: craters_per_km2   # ENFORCED — never use unitless value
+  gate_terrain_classes:
+    - highland
+    - polar_highland
+    - polar
+  mcr_outlier_method: mcr_structural
+  topology_similarity_threshold: 0.65   # (TUNE)
+  cpu_fallback: hough_circles            # activated when GPU unavailable; recorded as 'crater_hough'
+  preflight_recall_check: mandatory
+  # YOLOv9 validated ONLY at 0.5 m/px NAC. OHRC (0.3 m) and TMC (5 m) are UNVALIDATED_PRIMARY
+  # until recall check passes on a manually-verified crater patch for that sensor.
+
+# ---------------------------------------------------------------------------
+# Arbitration policy (production mode)
+# ---------------------------------------------------------------------------
+arbitration:
+  always_run: [sift]
+  inlier_ratio_floor: 0.05           # below this → fall back to M0
+  fallback_to: sift
+  preference_order:                  # tie-break order (highest rank wins)
+    - crater
+    - lightglue
+    - lnift
+    - rift2
+    - sift
+  tie_break:
+    rmse_delta_px: auto              # |RMSE_A - RMSE_B| < gt_interannotator_rmse_px
+    inlier_ratio_delta: 0.05         # |ratio_A - ratio_B| < this
+
+# ---------------------------------------------------------------------------
+# L3: Uniform correspondence selection
+# ---------------------------------------------------------------------------
+selection:
+  confidence_filter:
+    sift: 0.0
+    rift2: 0.0
+    lnift: 0.0
+    lightglue: 0.2                   # LightGlue confidence score (TUNE)
+    crater: 0.65
+  grid:
+    n_rows: 8
+    n_cols: 8
+    cap_per_cell: 5
+  budget: 250                        # target after selection (TUNE)
+  min_matches_after_selection: 25    # gate
+  coverage_min: 0.60                 # gate
+  conflict_resolution: highest_confidence

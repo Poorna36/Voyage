@@ -1,0 +1,4 @@
+roi_name,min_lat,max_lat,min_lon,max_lon
+ch2_vikram_landing,-70.9,-70.8,22.7,22.9
+equatorial_pilot,-6.5,-5.5,1.0,2.0
+south_pole_shackleton,-89.9,-89.5,0.0,90.0

@@ -1,0 +1,21 @@
+{
+  "products_written": 12,
+  "files": [
+    "ch2_ohr_ncp_20211228t2209123959_d_img_d18",
+    "ch2_iir_nri_20240524t1710004919_d_img_d18",
+    "ch2_iir_nri_20240427t1010597893_d_img_d18",
+    "ch2_iir_nri_20210620t2058297275_d_img_hw1",
+    "ch2_tmc_nca_20191212t0423276513_d_img_d18",
+    "ch2_tmc_nca_20220711t1227442830_d_img_d32",
+    "ch2_tmc_ncf_20191212t0423276838_d_img_d18",
+    "ch2_tmc_ncf_20200108t2341257476_d_img_mad",
+    "ch2_tmc_ncf_20220613t1623247403_d_img_d32",
+    "ch2_tmc_ncf_20220711t1227442830_d_img_d32",
+    "ch2_tmc_ncn_20200108t2341257476_d_img_mad",
+    "ch2_tmc_ncn_20220711t1227442798_d_img_d32"
+  ],
+  "all_have_footprint": true,
+  "all_have_solar": true,
+  "all_have_gsd": true,
+  "errors": []
+}

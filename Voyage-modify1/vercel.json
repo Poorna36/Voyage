@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd sih-dashboard && npm install && npm run build",
+  "outputDirectory": "sih-dashboard/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

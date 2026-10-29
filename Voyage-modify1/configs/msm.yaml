@@ -1,0 +1,37 @@
+# configs/msm.yaml
+# =================
+# Configuration for the Matcher Selection Model (MSM) (L1.5 / S4.5)
+#
+# Controls meta-model inference, confidence routing thresholds,
+# hard rule gates, and fallback safety behavior.
+
+msm:
+  enabled: false                      # Toggle for production mode (false = benchmark mode, all matchers run)
+  model_path: "models/msm_v1.pkl"
+  model_stats_path: "models/msm_v1_stats.json"
+  model_version: "msm_v1"
+
+  # Dual confidence routing thresholds (DEC-006, DEC-017)
+  tau_high: 0.65                      # P_max >= tau_high: execute single predicted matcher only
+  tau_low: 0.40                       # tau_low <= P_max < tau_high: execute primary + fallback matcher
+                                      # P_max < tau_low: safe mode (execute all matchers)
+
+  # Hard rule gates enforced before/alongside model predictions
+  hard_rules:
+    crater_density_gate:
+      enabled: true
+      tau_c: 5.0                      # Craters / Mpx threshold for M3 eligibility
+      valid_terrains: ["highland", "equatorial_highland", "polar_highland", "polar", "crater_floor", "ejecta"]
+    gpu_gate:
+      enabled: true
+      check_at_startup: true
+      route_m2_to_cpu: true           # If GPU unavailable, route M2 to CPU fallback (SuperPoint+LightGlue CPU mode)
+    iirs_track_gate:
+      enabled: true                   # IIRS pairs route directly to dedicated photometric module
+
+  # Escalation & fallback behavior
+  fallback:
+    on_model_load_error: "benchmark_mode"          # Fallback if model pickle not found or corrupted
+    on_feature_extraction_error: "benchmark_mode"   # Fallback if feature extraction fails
+    on_s4_gate_failure: "escalate_or_sift"         # If routed matcher fails S4 (<150 candidates), run fallback or M0
+    log_all_fallback_events: true
