@@ -336,6 +336,21 @@ class QuantumService:
 
         bench_lbl = res.get("benchmark_label", "SYNTHETIC SMOKE TEST - not evidence of real-data performance")
         problem = {"task": task, "n_samples": n_samples, "n_features": 8, "qubits": 8, "benchmark_label": bench_lbl}
+        if task == "router":
+            problem["router_status"] = "router not trained: requires real PairRecords"
+            metrics = {
+                "router_status": "router not trained: requires real PairRecords",
+                "status": "DEFERRED",
+                "benchmark_label": bench_lbl,
+            }
+            twin = {
+                "name": "rbf_svm_twin",
+                "status": "DEFERRED",
+                "router_status": "router not trained: requires real PairRecords",
+            }
+            circuit = {"qubits": 8, "depth": 0, "gates": {}}
+            return problem, metrics, twin, circuit
+
         metrics = {
             "quantum_accuracy": res["quantum_accuracy"],
             "quantum_auc": res["quantum_auc"],

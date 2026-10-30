@@ -13,7 +13,7 @@ Kernel:
   K(x, x') = |<phi(x') | phi(x)>|^2
 
 Two applications:
-  - Q2a Router: Matcher selection from 13-feature MSM vector (reduced to 8 via PCA).
+  - Q2a Router: DEFERRED (router not trained: requires real PairRecords).
   - Q2b Inlier Scorer: Classify matches as inlier/outlier from 8 per-match features.
 
 Classical Twins:
@@ -198,10 +198,15 @@ def run_q2_benchmark(
     rng = np.random.default_rng(seed)
 
     if task == "router":
-        # 13 features (MSM vector) -> 3 classes (0: SIFT, 1: RIFT2, 2: LightGlue)
-        X = rng.normal(size=(n_samples, 13))
-        # Semi-deterministic assignment based on features
-        y = np.clip((X[:, 0] * 1.5 + X[:, 1] * 0.8 + rng.normal(0, 0.5, n_samples) + 1.0).astype(int), 0, 2)
+        return {
+            "router_status": "router not trained: requires real PairRecords",
+            "benchmark_label": "SYNTHETIC SMOKE TEST - not evidence of real-data performance",
+            "task": "router",
+            "status": "DEFERRED",
+            "qubits": 8,
+            "quantum_accuracy": 0.0,
+            "classical_accuracy": 0.0,
+        }
     else:
         # 8 match features -> binary inlier
         X = rng.uniform(0.0, 1.0, size=(n_samples, 8))
