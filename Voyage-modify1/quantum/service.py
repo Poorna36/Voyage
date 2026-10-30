@@ -225,10 +225,36 @@ class QuantumService:
         matcher = QUBOMatcher({"solver": solver, "lambda_penalty": 5.0})
         res, info = matcher.filter_matches(raw, gsd_ratio=params.get("gsd_ratio", 1.0), seed=seed)
 
-        # Classical twin: top-k confidence filter
+        # Classical twin: RANSAC / MAGSAC++ geometric inlier estimation
         t_twin_0 = time.time()
-        keep_twin = raw.confidence >= float(np.median(raw.confidence))
+        n_kept_magsac = 0
+        method_name = "ransac"
+        try:
+            import cv2
+            # Note: cv2.setRNGSeed does not affect USAC_MAGSAC (USAC uses its own internal C++ RNG); row order permutation alters hypothesis sampling
+            cv2.setRNGSeed(int(seed))
+            flag = cv2.USAC_MAGSAC if hasattr(cv2, "USAC_MAGSAC") else cv2.RANSAC
+            method_name = "magsac_plus_plus" if hasattr(cv2, "USAC_MAGSAC") else "ransac"
+            if len(raw.src_xy) >= 4:
+                _, mask = cv2.findHomography(
+                    raw.src_xy.astype(np.float32),
+                    raw.ref_xy.astype(np.float32),
+                    flag,
+                    float(params.get("ransac_thresh", 3.0)),
+                )
+                if mask is not None:
+                    n_kept_magsac = int(np.sum(mask.ravel() == 1))
+                else:
+                    n_kept_magsac = 0
+            else:
+                n_kept_magsac = len(raw.src_xy)
+        except Exception as e:
+            log.warning("Classical RANSAC/MAGSAC++ twin failed: %s; falling back to median cut", e)
+            n_kept_magsac = int(np.sum(raw.confidence >= float(np.median(raw.confidence))))
+            method_name = "confidence_median_cut_fallback"
+
         twin_runtime = time.time() - t_twin_0
+        median_cut_kept = int(np.sum(raw.confidence >= float(np.median(raw.confidence))))
 
         problem = {"n_candidates": raw.count, "cap": info["n_vars"], "solver": solver}
         metrics = {
@@ -238,9 +264,11 @@ class QuantumService:
             "solution": info.get("solution", []),
         }
         twin = {
-            "name": "confidence_median_cut",
-            "n_kept": int(np.sum(keep_twin)),
+            "name": method_name,
+            "n_kept": n_kept_magsac,
+            "kept_fraction": round(n_kept_magsac / max(raw.count, 1), 4),
             "runtime_s": round(twin_runtime, 6),
+            "median_cut_n_kept": median_cut_kept,
         }
         circuit = {"qubits": info["n_vars"], "solver_type": solver}
         return problem, metrics, twin, circuit
