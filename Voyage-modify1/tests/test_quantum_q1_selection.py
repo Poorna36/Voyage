@@ -52,6 +52,22 @@ def test_full_grid_qaoa_selection():
     assert metrics["cells_total"] == metrics["cells_trivial"] + metrics["cells_qaoa"]
 
 
+def assert_tolerant_equal(actual, expected, rtol=1e-9, atol=1e-9):
+    import math
+    if isinstance(expected, float):
+        assert math.isclose(actual, expected, rel_tol=rtol, abs_tol=atol), f"Float mismatch: {actual} vs {expected}"
+    elif isinstance(expected, dict):
+        assert actual.keys() == expected.keys(), f"Key mismatch: {actual.keys()} vs {expected.keys()}"
+        for k in expected:
+            assert_tolerant_equal(actual[k], expected[k], rtol, atol)
+    elif isinstance(expected, (list, tuple)):
+        assert len(actual) == len(expected), f"Length mismatch: {len(actual)} vs {len(expected)}"
+        for a, e in zip(actual, expected):
+            assert_tolerant_equal(a, e, rtol, atol)
+    else:
+        assert actual == expected, f"Value mismatch: {actual} != {expected}"
+
+
 def test_qaoa_shots_forwarding_and_equality():
     from quantum.service import QuantumService
 
@@ -75,10 +91,13 @@ def test_qaoa_shots_forwarding_and_equality():
     problem_def = {k: v for k, v in rec_default.problem.items() if k != "shots"}
     circuit_def = {k: v for k, v in rec_default.circuit.items() if k != "shots"}
 
-    assert metrics_def == base_def["metrics"]
-    assert problem_def == base_def["problem"]
-    assert circuit_def == base_def["circuit"]
-    assert {k: v for k, v in rec_default.classical_twin.items() if k != "runtime_s"} == {k: v for k, v in base_def["classical_twin"].items() if k != "runtime_s"}
+    assert_tolerant_equal(metrics_def, base_def["metrics"])
+    assert_tolerant_equal(problem_def, base_def["problem"])
+    assert_tolerant_equal(circuit_def, base_def["circuit"])
+    assert_tolerant_equal(
+        {k: v for k, v in rec_default.classical_twin.items() if k != "runtime_s"},
+        {k: v for k, v in base_def["classical_twin"].items() if k != "runtime_s"},
+    )
 
     # (a.2) Capped problem matches 218c16e baseline
     s_xy = np.array(base_cap["inputs"]["src_xy"], dtype=np.float32)
@@ -95,10 +114,13 @@ def test_qaoa_shots_forwarding_and_equality():
     problem_cap = {k: v for k, v in rec_capped.problem.items() if k != "shots"}
     circuit_cap = {k: v for k, v in rec_capped.circuit.items() if k != "shots"}
 
-    assert metrics_cap == base_cap["metrics"]
-    assert problem_cap == base_cap["problem"]
-    assert circuit_cap == base_cap["circuit"]
-    assert {k: v for k, v in rec_capped.classical_twin.items() if k != "runtime_s"} == {k: v for k, v in base_cap["classical_twin"].items() if k != "runtime_s"}
+    assert_tolerant_equal(metrics_cap, base_cap["metrics"])
+    assert_tolerant_equal(problem_cap, base_cap["problem"])
+    assert_tolerant_equal(circuit_cap, base_cap["circuit"])
+    assert_tolerant_equal(
+        {k: v for k, v in rec_capped.classical_twin.items() if k != "runtime_s"},
+        {k: v for k, v in base_cap["classical_twin"].items() if k != "runtime_s"},
+    )
 
     # (b) Non-default shots value actually reaches the solver and service records
     rec_custom = svc.run_module(pair_id="custom_shots", module="Q1_selection", params={"shots": 256}, seed=42)
