@@ -106,10 +106,16 @@ def select_cell_qaoa(
     mu: float = 1.5,
     p_layers: int = 2,
     restarts: int = 3,
+    shots: int = 1024,
     seed: int = 42,
 ) -> Dict[str, Any]:
     """
     Solve subset selection for one cell using QAOA and compare with exact solver.
+
+    Parameters:
+      shots: Number of measurement samples drawn from final statevector.
+             Note: QAOA variational optimization uses exact statevector expectation
+             <H_P>; shots only affects final measurement sampling of candidate bitstrings.
     """
     K = len(coords)
     if K <= k:
@@ -125,6 +131,7 @@ def select_cell_qaoa(
             "n_candidates": K,
             "n_selected": K,
             "trivially_satisfied": True,
+            "shots": shots,
         }
 
     # Cap problem to 12 qubits if K > 12 to guarantee statevector performance
@@ -140,7 +147,7 @@ def select_cell_qaoa(
     exact_x, min_E, max_E, mean_E = solve_cell_exact(Q, k)
 
     # Solve via QAOA
-    solver = QAOASolver(p_layers=p_layers, n_optimizer_restarts=restarts, seed=seed)
+    solver = QAOASolver(p_layers=p_layers, n_optimizer_restarts=restarts, n_shots=shots, seed=seed)
     qaoa_res = solver.solve(Q)
 
     qaoa_sol = np.asarray(qaoa_res.get("solution", exact_x), dtype=int)
@@ -160,6 +167,7 @@ def select_cell_qaoa(
         "n_selected": int(np.sum(qaoa_sol)),
         "trivially_satisfied": False,
         "p_layers": p_layers,
+        "shots": shots,
     }
 
 
@@ -172,12 +180,18 @@ def select_qaoa(
     cap: int = 5,
     p_layers: int = 2,
     restarts: int = 3,
+    shots: int = 1024,
     mu: float = 1.5,
     backend: Optional[Any] = None,
     seed: int = 42,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Dict[str, Any]]:
     """
     Q1: Full NxN grid QAOA selection across all cells.
+
+    Parameters:
+      shots: Number of measurement samples drawn from final statevector per cell.
+             Variational optimization uses exact statevector expectation; shots only
+             governs final measurement sampling.
 
     Returns:
       (selected_src_xy, selected_ref_xy, selected_confidence, metrics_summary)
@@ -194,6 +208,7 @@ def select_qaoa(
             "approx_ratio_mean": 1.0,
             "approx_ratio_min": 1.0,
             "runtime_s": 0.0,
+            "shots": shots,
         }
 
     if image_shape is not None:
@@ -236,6 +251,7 @@ def select_qaoa(
             mu=mu,
             p_layers=p_layers,
             restarts=restarts,
+            shots=shots,
             seed=cell_seed,
         )
         cell_results.append(res)
@@ -274,6 +290,7 @@ def select_qaoa(
         "approx_ratio_min": round(min_ar, 4),
         "approx_ratio_above_095": round(ratio_above_95, 4),
         "p_layers": p_layers,
+        "shots": shots,
         "runtime_s": round(runtime_s, 4),
         "classical_twin_runtime_s": round(runtime_twin_s, 6),
     }

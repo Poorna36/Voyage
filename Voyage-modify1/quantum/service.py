@@ -287,12 +287,14 @@ class QuantumService:
             r_xy = s_xy + np.array([5.0, -3.0], dtype=np.float32)
             conf = rng.uniform(0.3, 0.98, size=N).astype(np.float32)
 
+        shots = int(params.get("shots", 1024))
         sel_s, sel_r, sel_c, stats = select_qaoa(
             s_xy, r_xy, conf,
             n=params.get("grid_n", 8),
             cap=params.get("cap_per_cell", 5),
             p_layers=params.get("p_layers", 2),
             restarts=params.get("restarts", 3),
+            shots=shots,
             seed=seed,
         )
 
@@ -301,6 +303,7 @@ class QuantumService:
             "grid_n": params.get("grid_n", 8),
             "cap_per_cell": params.get("cap_per_cell", 5),
             "p_layers": params.get("p_layers", 2),
+            "shots": shots,
         }
         metrics = {
             "n_selected_qaoa": stats["n_selected_qaoa"],
@@ -308,6 +311,7 @@ class QuantumService:
             "approx_ratio_min": stats["approx_ratio_min"],
             "fraction_cells_above_095": stats["approx_ratio_above_095"],
             "occupied_cells": stats["n_cells_occupied"],
+            "shots": stats.get("shots", shots),
         }
         twin = {
             "name": "grid_cap_classical",
@@ -317,6 +321,7 @@ class QuantumService:
         circuit = {
             "max_qubits_per_cell": 12,
             "p_layers": params.get("p_layers", 2),
+            "shots": shots,
             "subproblems": stats["n_cells_occupied"],
         }
         return problem, metrics, twin, circuit
