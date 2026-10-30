@@ -77,3 +77,27 @@ def test_quantum_sign_and_verify_endpoints():
     assert verify_res.status_code == 200
     v_data = verify_res.json()
     assert v_data["valid"] is True
+
+
+def test_q2_synthetic_smoke_test_label_survives_service_and_api():
+    from quantum.service import QuantumService
+
+    # 1. Service level
+    svc = QuantumService()
+    rec = svc.run_module("boguslawsky", "Q2_inlier", seed=42)
+    expected_label = "SYNTHETIC SMOKE TEST - not evidence of real-data performance"
+    assert rec.problem.get("benchmark_label") == expected_label
+    assert rec.metrics.get("benchmark_label") == expected_label
+
+    # 2. REST API level
+    run_res = client.post("/api/quantum/run", json={"pair_id": "boguslawsky", "module": "Q2_inlier"})
+    assert run_res.status_code == 202
+    run_id = run_res.json()["run_id"]
+
+    poll_res = client.get(f"/api/quantum/runs/{run_id}")
+    assert poll_res.status_code == 200
+    p_data = poll_res.json()
+    assert p_data["status"] == "completed"
+    assert p_data["record"]["problem"].get("benchmark_label") == expected_label
+    assert p_data["record"]["metrics"].get("benchmark_label") == expected_label
+

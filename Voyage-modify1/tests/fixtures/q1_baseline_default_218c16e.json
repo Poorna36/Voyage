@@ -1,0 +1,28 @@
+{
+  "commit": "218c16ed3bb11114b986575f2c45a6baddf43f8c",
+  "pair_id": "baseline_default",
+  "module": "Q1_selection",
+  "problem": {
+    "n_candidates_total": 60,
+    "grid_n": 8,
+    "cap_per_cell": 5,
+    "p_layers": 2
+  },
+  "metrics": {
+    "n_selected_qaoa": 60,
+    "approx_ratio_mean": 1.0,
+    "approx_ratio_min": 1.0,
+    "fraction_cells_above_095": 1.0,
+    "occupied_cells": 37
+  },
+  "classical_twin": {
+    "name": "grid_cap_classical",
+    "n_selected": 60,
+    "runtime_s": 0.000151
+  },
+  "circuit": {
+    "max_qubits_per_cell": 12,
+    "p_layers": 2,
+    "subproblems": 37
+  }
+}

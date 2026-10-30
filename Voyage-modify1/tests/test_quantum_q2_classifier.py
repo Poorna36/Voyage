@@ -42,3 +42,4 @@ def test_run_q2_benchmark():
     assert "quantum_accuracy" in res
     assert "classical_accuracy" in res
     assert res["qubits"] == 8
+    assert res.get("benchmark_label") == "SYNTHETIC SMOKE TEST - not evidence of real-data performance"

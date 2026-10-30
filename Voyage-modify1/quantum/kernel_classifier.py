@@ -191,6 +191,7 @@ def run_q2_benchmark(
     seed: int = 42,
 ) -> Dict[str, Any]:
     """
+    # SYNTHETIC SMOKE TEST - not evidence of real-data performance
     Run evaluation comparing Quantum Kernel vs Classical RBF-SVM Twin.
     task: "router" (13 features -> 3 classes) or "inlier" (8 features -> binary inlier/outlier).
     """
@@ -243,6 +244,7 @@ def run_q2_benchmark(
             pass
 
     return {
+        "benchmark_label": "SYNTHETIC SMOKE TEST - not evidence of real-data performance",
         "task": task,
         "n_samples": n_samples,
         "n_train": n_train,

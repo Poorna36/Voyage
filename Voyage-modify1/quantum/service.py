@@ -311,6 +311,9 @@ class QuantumService:
             "approx_ratio_min": stats["approx_ratio_min"],
             "fraction_cells_above_095": stats["approx_ratio_above_095"],
             "occupied_cells": stats["n_cells_occupied"],
+            "cells_total": stats.get("cells_total", stats["n_cells_occupied"]),
+            "cells_trivial": stats.get("cells_trivial", 0),
+            "cells_qaoa": stats.get("cells_qaoa", 0),
             "shots": stats.get("shots", shots),
         }
         twin = {
@@ -331,11 +334,13 @@ class QuantumService:
         n_samples = params.get("n_samples", 120)
         res = run_q2_benchmark(task=task, n_samples=n_samples, seed=seed)
 
-        problem = {"task": task, "n_samples": n_samples, "n_features": 8, "qubits": 8}
+        bench_lbl = res.get("benchmark_label", "SYNTHETIC SMOKE TEST - not evidence of real-data performance")
+        problem = {"task": task, "n_samples": n_samples, "n_features": 8, "qubits": 8, "benchmark_label": bench_lbl}
         metrics = {
             "quantum_accuracy": res["quantum_accuracy"],
             "quantum_auc": res["quantum_auc"],
             "reps": res["reps"],
+            "benchmark_label": bench_lbl,
         }
         twin = {
             "name": "rbf_svm_twin",
