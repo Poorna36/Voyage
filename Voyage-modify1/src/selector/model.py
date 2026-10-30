@@ -53,6 +53,7 @@ class SelectorResult:
     hard_rules_applied: List[str]
     selector_version: str = "msm_v1"
     feature_vector_hash: str = ""
+    explanation: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         """Return dict representation."""
@@ -78,6 +79,7 @@ class MatcherSelector:
         self.model_version: str = str(msm_cfg.get("model_version", "msm_v1"))
         self.tau_high: float = float(msm_cfg.get("tau_high", 0.65))
         self.tau_low: float = float(msm_cfg.get("tau_low", 0.40))
+        self.strategy: str = str(msm_cfg.get("strategy", "trained"))
         self.hard_rules: Dict[str, Any] = msm_cfg.get("hard_rules", {})
         self.fallback_cfg: Dict[str, Any] = msm_cfg.get("fallback", {})
 
@@ -140,7 +142,12 @@ class MatcherSelector:
             self.model_path = str(model_path)
         return self._load_model_safe()
 
-    def predict(self, features: MSMFeatureVector) -> SelectorResult:
+    def predict(
+        self,
+        features: MSMFeatureVector,
+        override_matcher: Optional[str] = None,
+        strategy: Optional[str] = None,
+    ) -> SelectorResult:
         """
         Predict the winning matcher and determine execution routing for a given pair.
 
@@ -148,12 +155,44 @@ class MatcherSelector:
         ----------
         features : MSMFeatureVector
             13-dimensional canonical feature vector.
+        override_matcher : Optional[str]
+            Optional manual override matcher name.
+        strategy : Optional[str]
+            Optional strategy override ("trained" | "rules").
 
         Returns
         -------
         SelectorResult
             Selection result including routing decision and confidence probabilities.
         """
+        active_strategy = strategy or self.strategy
+        if active_strategy == "rules":
+            try:
+                from quantum.matcher_selector import RuleBasedMatcherSelector
+                rule_sel = RuleBasedMatcherSelector()
+                rule_res = rule_sel.select(features, override_matcher=override_matcher)
+                probs_dict = {m: rule_res.all_scores.get(m, 0.0) for m in MATCHER_NAMES}
+                if rule_res.selected_matcher not in probs_dict:
+                    probs_dict[rule_res.selected_matcher] = round(rule_res.confidence, 4)
+                matchers_to_run = [rule_res.selected_matcher]
+                if rule_res.confidence < self.tau_high and rule_res.fallback_matcher != rule_res.selected_matcher:
+                    matchers_to_run.append(rule_res.fallback_matcher)
+                return SelectorResult(
+                    pair_id=features.pair_id,
+                    selected_matcher=rule_res.selected_matcher,
+                    confidence=round(rule_res.confidence, 4),
+                    fallback_matcher=rule_res.fallback_matcher,
+                    all_probs=probs_dict,
+                    routing_reason="manual_override" if rule_res.manual_override else "rule_based_selection",
+                    matchers_to_run=matchers_to_run,
+                    hard_rules_applied=rule_res.decision_path,
+                    selector_version=f"{self.model_version}_rules",
+                    feature_vector_hash=features.feature_vector_hash,
+                    explanation=rule_res.explanation,
+                )
+            except Exception as exc:
+                logger.warning("RuleBasedMatcherSelector failed: %s. Falling back to default pipeline.", exc)
+
         hard_rules_applied: List[str] = []
         vec = vectorize_features(features).reshape(1, -1)
 
@@ -252,6 +291,14 @@ class MatcherSelector:
         else:
             matchers_to_run = [m for m in MATCHER_NAMES]
             routing_reason = "low_confidence_safe_mode"
+
+        if override_matcher is not None:
+            override_clean = override_matcher.strip().lower()
+            if override_clean in MATCHER_NAMES or override_clean in ["sift", "rift2", "lightglue", "crater", "lnift"]:
+                selected_matcher = override_clean
+                routing_reason = "manual_override"
+                hard_rules_applied.append(f"manual_override({override_clean})")
+                matchers_to_run = [override_clean]
 
         result = SelectorResult(
             pair_id=features.pair_id,

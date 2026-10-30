@@ -17,6 +17,12 @@ import { ComparisonTable } from './ComparisonTable';
 import { CircuitSummary } from './CircuitSummary';
 import { SecurityPanel } from './SecurityPanel';
 import { BenchmarkBoard } from './BenchmarkBoard';
+import {
+  MatcherSelectorPanel,
+  QNNReliabilityPanel,
+  QAOAOptimiserPanel,
+  AblationLadderPanel,
+} from './V2QuantumPanels';
 import { useQuantumRun } from '../../hooks/useQuantumRun';
 import { fetchQuantumStatus, fetchCircuitData } from '../../services/quantumApi';
 import type { QuantumStatusResponse, BackendInfo, CircuitData } from '../../types/quantum';
@@ -27,7 +33,7 @@ interface QuantumLabProps {
 
 export const QuantumLab: FC<QuantumLabProps> = ({ selectedPairId = 'boguslawsky' }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'matching' | 'selection' | 'classifier' | 'consensus' | 'fourier' | 'imaging' | 'security' | 'benchmarks'
+    'overview' | 'v2_matcher' | 'v2_qnn' | 'v2_qaoa' | 'v2_ablation' | 'matching' | 'selection' | 'classifier' | 'consensus' | 'fourier' | 'imaging' | 'security' | 'benchmarks'
   >('overview');
 
   const [statusData, setStatusData] = useState<QuantumStatusResponse | null>(null);
@@ -99,6 +105,10 @@ export const QuantumLab: FC<QuantumLabProps> = ({ selectedPairId = 'boguslawsky'
       <div className="flex items-center gap-1.5 overflow-x-auto pb-3 mb-6 border-b border-white/10 text-xs font-medium">
         {[
           { id: 'overview', label: 'Overview & Status', icon: Layers },
+          { id: 'v2_ablation', label: 'Ablation Ladder (§6)', icon: Award },
+          { id: 'v2_matcher', label: 'Matcher Selector (§3A)', icon: GitCommit },
+          { id: 'v2_qnn', label: 'QNN Reliability (§3B)', icon: Sparkles },
+          { id: 'v2_qaoa', label: 'QAOA Optimiser (§3E)', icon: Cpu },
           { id: 'matching', label: 'Matching (Q0)', icon: GitCommit },
           { id: 'selection', label: 'Selection (Q1)', icon: Sparkles },
           { id: 'classifier', label: 'Kernel Classifier (Q2)', icon: Activity },
@@ -106,7 +116,7 @@ export const QuantumLab: FC<QuantumLabProps> = ({ selectedPairId = 'boguslawsky'
           { id: 'fourier', label: 'QFT Correlation (Q4)', icon: Radio },
           { id: 'imaging', label: 'Quantum Imaging (Q5)', icon: Cpu },
           { id: 'security', label: 'Post-Quantum (Q7)', icon: Shield },
-          { id: 'benchmarks', label: 'Benchmark Board', icon: Award },
+          { id: 'benchmarks', label: 'Legacy Benchmarks', icon: Award },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -155,13 +165,21 @@ export const QuantumLab: FC<QuantumLabProps> = ({ selectedPairId = 'boguslawsky'
         />
       )}
 
+      {/* Spec v2 Subsystem Panes */}
+      {activeTab === 'v2_matcher' && <MatcherSelectorPanel selectedPairId={selectedPairId} />}
+      {activeTab === 'v2_qnn' && <QNNReliabilityPanel />}
+      {activeTab === 'v2_qaoa' && <QAOAOptimiserPanel />}
+      {activeTab === 'v2_ablation' && <AblationLadderPanel />}
+
       {/* Tab Specific Extra Panes */}
       {activeTab === 'security' && <SecurityPanel />}
       {activeTab === 'benchmarks' && <BenchmarkBoard />}
 
       {/* Module Overview Cards Grid (when on overview tab) */}
       {activeTab === 'overview' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
+        <>
+          <AblationLadderPanel />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
           {[
             { id: 'Q0', title: 'Q0: Matcher & Filter', layer: 'L2 Correspondence', desc: 'Ising QUBO consistency filter rejecting topological outliers.' },
             { id: 'Q1', title: 'Q1: QAOA Selection', layer: 'L3 Spatial Selection', desc: '8x8 cell QAOA selecting confident spread-out keypoint subsets.' },
@@ -185,6 +203,7 @@ export const QuantumLab: FC<QuantumLabProps> = ({ selectedPairId = 'boguslawsky'
             </div>
           ))}
         </div>
+        </>
       )}
     </div>
   );

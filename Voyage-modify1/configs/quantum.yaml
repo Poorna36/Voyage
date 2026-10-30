@@ -1,27 +1,68 @@
 # =============================================================================
 # configs/quantum.yaml
-# Chandrayaan-2 Lunar Image Registration — Quantum Subsystem Configuration
+# Chandrayaan-2 Lunar Image Registration — Unified Quantum Configuration (Build Spec v2 §5)
 # =============================================================================
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Unified Spec v2 Quantum Configuration Schema (§5)
+# ─────────────────────────────────────────────────────────────────────────────
+quantum:
+  enabled: false               # Master switch: when false, entire pipeline is pure classical
+  mode: "classical"            # 'classical' | 'hybrid' | 'experimental'
+
+  matcher_selector:
+    enabled: true
+    strategy: "rules"          # 'rules' | 'learned'
+    model_path: "models/msm_v1.pkl"
+    fallback_matcher: "sift"
+
+  qnn_reliability:
+    enabled: false
+    model_path: "models/qnn_reliability.pkl"
+    backend: "aer_simulator"   # Local simulator only
+    threshold: 0.5
+
+  qcnn_features:
+    enabled: false
+    patch_size: 4              # 4x4 or 8x8
+    qubits: 4                  # 4 to 8
+    descriptor_dim: 4
+
+  simulator:
+    backend: "qiskit_aer"      # 'qiskit_aer'
+    mode: "ideal_simulator"    # 'ideal_simulator' | 'noisy_simulator' | 'fake_ibm_backend'
+    fake_backend_name: "fake_ibm_perth"
+    noise_model:
+      depolarizing_error: 0.001
+      readout_error: 0.015
+    shots: 1024
+
+  qaoa_correspondence:
+    enabled: false
+    depth_p: 1
+    max_variables: 16
+    optimizer: "COBYLA"
+    use_exact_benchmark: true  # Compute gap to exact for M <= 16
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Operational Settings & Legacy Module Registry (Preserved for Q0-Q7)
+# ─────────────────────────────────────────────────────────────────────────────
 enabled: true
 global_mode: "shadow"   # "off" | "shadow" | "active"
 seed: 42
 
-# Operational limits (enforced in quantum/service.py)
 limits:
   max_qubits: 16               # statevector simulation limit
   max_runtime_s: 60.0          # per module wall-clock limit
   max_problem_variables: 64    # max vars before SQA/split fallback
 
-# Default backend
 default_backend: "numpy_statevector"
 
-# Module configurations
 modules:
   Q0_filter:
     name: "QUBO Correspondence Filter"
-    mode: "shadow"             # off | shadow | active
-    solver: "sqa"              # sqa | qaoa | classical_sa | hungarian
+    mode: "shadow"
+    solver: "sqa"
     max_candidates: 48
     unary_weight: 1.0
     pairwise_weight: 1.0
@@ -70,7 +111,7 @@ modules:
   Q4_phase_corr:
     name: "QFT Phase Correlation"
     mode: "shadow"
-    tile_size: 32              # 32x32 -> 10 qubits (5 row + 5 col)
+    tile_size: 32
     hann_window: true
     zero_pad: true
     subpixel_paraboloid: true
@@ -78,19 +119,18 @@ modules:
   Q5_encoding:
     name: "Quantum Image Encoding & Edge Detection"
     mode: "shadow"
-    tile_size: 16              # 16x16 -> FRQI: 9 qubits, NEQR: 16 qubits
-    encoding_type: "frqi"      # frqi | neqr | amplitude
+    tile_size: 16
+    encoding_type: "frqi"
     edge_detection: true
 
   Q7_signing:
     name: "Post-Quantum Cryptographic Signatures"
-    mode: "active"             # Active when keys available
+    mode: "active"
     algorithm: "ML-DSA-65+Ed25519"
     pubkey_id: "voyage-2026-01"
     private_key_env: "VOYAGE_PQC_PRIVATE_KEY"
     sign_extensions: [".tif", ".csv", ".json", ".png"]
 
-# Backends configuration
 backends:
   numpy_statevector:
     kind: "simulator"

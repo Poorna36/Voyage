@@ -65,10 +65,28 @@ class FallbackRecord:
     reason: Optional[str] = None
 
 
+def get_git_commit_hash() -> str:
+    """Retrieve current git commit hash safely."""
+    try:
+        import subprocess
+        res = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=PROJECT_ROOT,
+            capture_output=True,
+            text=True,
+            timeout=2.0,
+        )
+        if res.returncode == 0:
+            return res.stdout.strip()
+    except Exception:
+        pass
+    return "unknown_commit"
+
+
 @dataclass
 class QuantumRunRecord:
     """
-    Standard record format for all Q0–Q7 quantum modules (ARCHITECTURE §4.3).
+    Standard record format for all Q0–Q7 quantum modules and v2 hybrid experiments (Spec v2 §7).
     """
     run_id: str
     pair_id: str
@@ -86,6 +104,17 @@ class QuantumRunRecord:
     created_utc: str = field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
+
+    # Spec v2 fields (§7)
+    git_commit: str = field(default_factory=get_git_commit_hash)
+    repro_command: str = ""
+    pipeline_mode: str = "classical"    # "classical" | "hybrid" | "experimental"
+    active_components: List[str] = field(default_factory=list)
+    backend_type: str = "simulator"     # Strictly "simulator" or "hardware"
+    backend_mode: str = "ideal_simulator"  # "ideal_simulator" | "noisy_simulator" | "fake_ibm_backend"
+    noise_model: Optional[Dict[str, Any]] = None
+    decision_logs: Dict[str, Any] = field(default_factory=dict)
+    config_snapshot: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert record to a JSON-serializable dictionary."""

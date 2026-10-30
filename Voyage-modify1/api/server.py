@@ -81,7 +81,8 @@ app.include_router(config.router)
 app.include_router(pipeline.router)
 app.include_router(metrics.router)
 app.include_router(science.router)
-app.include_router(quantum.router)
+app.include_router(quantum.router, prefix="/api/quantum")
+app.include_router(quantum.router, prefix="/api/v1/quantum")
 
 
 # ── Health Check ──

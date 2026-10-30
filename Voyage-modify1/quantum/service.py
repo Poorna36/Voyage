@@ -91,11 +91,21 @@ class QuantumService:
                 "promoted": promoted,
             })
 
+        q_v2 = self.config.get("quantum", {})
         return {
             "enabled": bool(self.config.get("enabled", True)),
             "global_mode": self.config.get("global_mode", "shadow"),
+            "mode": q_v2.get("mode", "classical"),
+            "pipeline_mode": q_v2.get("mode", "classical"),
             "limits": self.limits,
             "modules": module_list,
+            "components": {
+                "matcher_selector": q_v2.get("matcher_selector", {"enabled": True, "strategy": "rules"}),
+                "qnn_reliability": q_v2.get("qnn_reliability", {"enabled": False}),
+                "qcnn_features": q_v2.get("qcnn_features", {"enabled": False}),
+                "simulator": q_v2.get("simulator", {"backend": "qiskit_aer", "mode": "ideal_simulator"}),
+                "qaoa_correspondence": q_v2.get("qaoa_correspondence", {"enabled": False}),
+            },
             "backends": list_backends(),
             "versions": {
                 "voyage_quantum": "0.2.0",

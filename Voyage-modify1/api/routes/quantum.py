@@ -31,7 +31,7 @@ from quantum.records import QuantumRunRecord
 from quantum.service import QuantumService, is_module_promoted, load_quantum_config
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/quantum", tags=["quantum"])
+router = APIRouter(tags=["quantum"])
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 RESULTS_DIR = PROJECT_ROOT / "results" / "quantum"
@@ -447,3 +447,159 @@ async def verify_product(req: VerifyRequest):
         "algorithm": signer.algorithm,
         "verified_utc": datetime.now(timezone.utc).isoformat(),
     }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Build Spec v2 Endpoints (§8)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class MatcherSelectRequest(BaseModel):
+    pair_id: Optional[str] = "pair_user_query"
+    features: Dict[str, Any] = Field(default_factory=dict)
+    override_matcher: Optional[str] = None
+    strategy: str = "rules"
+
+
+class QNNClassifyRequest(BaseModel):
+    features: List[List[float]]
+    threshold: float = 0.5
+
+
+class QCNNExtractRequest(BaseModel):
+    patch: List[List[float]]
+    descriptor_dim: int = 4
+
+
+class QAOAOptimizeRequest(BaseModel):
+    src_pts: List[List[float]]
+    ref_pts: List[List[float]]
+    candidate_pairs: List[List[int]]
+    affinities: List[float]
+    p_layers: int = 1
+    use_qaoa: bool = True
+
+
+@router.post("/select-matcher")
+async def select_matcher_endpoint(req: MatcherSelectRequest):
+    """
+    Intelligent Matcher Selector (Build Spec v2 §3A).
+    Selects optimal classical matcher based on image pair characteristics.
+    """
+    from quantum.matcher_selector import RuleBasedMatcherSelector
+
+    selector = RuleBasedMatcherSelector()
+    features = dict(req.features)
+    if "pair_id" not in features:
+        features["pair_id"] = req.pair_id
+
+    res = selector.select(features, override_matcher=req.override_matcher)
+    return res.to_dict()
+
+
+@router.post("/qnn-classify")
+async def qnn_classify_endpoint(req: QNNClassifyRequest):
+    """
+    QNN Match Reliability Classifier (Build Spec v2 §3B).
+    Classifies candidate match correspondences as true match vs spurious.
+    """
+    import numpy as np
+    from quantum.qnn_reliability import QNNReliabilityClassifier
+
+    X = np.asarray(req.features, dtype=np.float64)
+    if X.ndim != 2 or X.shape[1] < 4:
+        raise HTTPException(status_code=422, detail="Features must be an (N, 4) or (N, 6) float matrix")
+
+    clf = QNNReliabilityClassifier(num_features=X.shape[1])
+    probs = clf.predict_proba(X)
+    labels = (probs >= req.threshold).astype(int)
+
+    return {
+        "n_samples": len(probs),
+        "scores": [round(float(p), 4) for p in probs],
+        "labels": [int(y) for y in labels],
+        "threshold": req.threshold,
+    }
+
+
+@router.post("/qcnn-extract")
+async def qcnn_extract_endpoint(req: QCNNExtractRequest):
+    """
+    QCNN Small-Patch Feature Extractor (Build Spec v2 §3C).
+    Extracts compact descriptor from a 4x4 or 8x8 grayscale image patch.
+    """
+    import numpy as np
+    from quantum.qcnn_features import QCNNFeatureExtractor
+
+    p = np.asarray(req.patch, dtype=np.float64)
+    if p.ndim != 2 or p.shape[0] < 2 or p.shape[1] < 2:
+        raise HTTPException(status_code=422, detail="Patch must be a 2D float matrix of at least 2x2")
+
+    extractor = QCNNFeatureExtractor(descriptor_dim=req.descriptor_dim)
+    desc = extractor.extract_descriptor(p)
+
+    return {
+        "descriptor": [round(float(d), 5) for d in desc],
+        "dim": len(desc),
+        "norm": round(float(np.linalg.norm(desc)), 4),
+    }
+
+
+@router.post("/qaoa-optimize")
+async def qaoa_optimize_endpoint(req: QAOAOptimizeRequest):
+    """
+    QAOA Correspondence Optimisation (Build Spec v2 §3E).
+    Solves QUBO for correspondence selection and compares with classical baselines.
+    """
+    import numpy as np
+    from quantum.qaoa_correspondence import QAOACorrespondenceOptimizer
+
+    src_pts = np.asarray(req.src_pts, dtype=np.float32)
+    ref_pts = np.asarray(req.ref_pts, dtype=np.float32)
+    pairs = np.asarray(req.candidate_pairs, dtype=np.int32)
+    affinities = np.asarray(req.affinities, dtype=np.float32)
+
+    if len(pairs) != len(affinities):
+        raise HTTPException(status_code=422, detail="Length of candidate_pairs and affinities must match")
+
+    opt = QAOACorrespondenceOptimizer(p_layers=req.p_layers, max_vars=16)
+    res = opt.optimize(src_pts, ref_pts, pairs, affinities, use_qaoa=req.use_qaoa)
+
+    return res.to_dict()
+
+
+@router.get("/ablation-summary")
+async def get_ablation_summary():
+    """
+    Ablation Ladder Benchmark Summary (Build Spec v2 §6).
+    Returns latest benchmark comparisons across all 6 configurations.
+    """
+    summary_csv = RESULTS_DIR / "ablation_summary.csv"
+    summary_md = RESULTS_DIR / "ablation_summary.md"
+
+    if not summary_csv.exists():
+        # Run a quick ablation benchmark on sample data if not yet executed
+        from quantum.ablation_runner import AblationLadderRunner
+        runner = AblationLadderRunner(output_dir=RESULTS_DIR)
+        pairs = runner._generate_synthetic_test_pairs()[:2]
+        runner.run_ladder(sample_pairs=pairs)
+
+    import csv
+    rows = []
+    if summary_csv.exists():
+        with open(summary_csv, "r", encoding="utf-8") as fh:
+            reader = csv.DictReader(fh)
+            for r in reader:
+                rows.append(r)
+
+    md_content = ""
+    if summary_md.exists():
+        with open(summary_md, "r", encoding="utf-8") as fh:
+            md_content = fh.read()
+
+    return {
+        "configurations": rows,
+        "markdown_table": md_content,
+        "total_configs": len(rows),
+    }
+
+

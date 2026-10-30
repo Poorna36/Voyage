@@ -408,3 +408,181 @@ def sift_ransac_baseline(
         "solver": "sift_ransac",
         "n_matches": len(src_pts),
     }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Spec v2 §3E: Exact Brute-Force QUBO Solver & Greedy Compatibility Baseline
+# ─────────────────────────────────────────────────────────────────────────────
+
+class ExactQUBOSolver:
+    """
+    Exact brute-force QUBO solver for small instances (M <= 16) (Spec v2 §3E).
+    Evaluates all 2^M bitstrings to compute the true global optimum and verify QAOA solution quality.
+    """
+
+    def __init__(self, max_vars: int = 16) -> None:
+        self.max_vars = int(max_vars)
+
+    def solve(self, Q: np.ndarray) -> Dict[str, Any]:
+        t0 = time.time()
+        Q = np.asarray(Q, dtype=np.float64)
+        M = Q.shape[0]
+        if M == 0:
+            return {
+                "solution": np.zeros(0, dtype=np.int32),
+                "energy": 0.0,
+                "runtime_s": 0.0,
+                "solver": "exact_bruteforce",
+                "n_states_evaluated": 0,
+            }
+        if M > self.max_vars:
+            raise ValueError(f"Exact solver limited to M <= {self.max_vars}; got {M}")
+
+        n_states = 1 << M
+        # Generate all bitstrings
+        idxs = ((np.arange(n_states)[:, None] & (1 << np.arange(M))) > 0).astype(np.float64)
+        energies = np.sum((idxs @ Q) * idxs, axis=1)
+        best_idx = int(np.argmin(energies))
+        min_e = float(energies[best_idx])
+        best_sol = idxs[best_idx].astype(np.int32)
+
+        return {
+            "solution": best_sol,
+            "energy": min_e,
+            "best_bitstring": "".join(map(str, best_sol)),
+            "all_energies": energies,
+            "runtime_s": time.time() - t0,
+            "n_states_evaluated": n_states,
+            "solver": "exact_bruteforce",
+        }
+
+
+class GreedyCompatibilitySolver:
+    """
+    Greedy compatibility selection baseline for correspondence optimization (Spec v2 §3E).
+    Iteratively picks candidate matches with highest average consistency with already-selected set.
+    """
+
+    def __init__(self, max_matches: Optional[int] = None, min_consistency: float = 0.0) -> None:
+        self.max_matches = max_matches
+        self.min_consistency = min_consistency
+
+    def solve(
+        self,
+        Q: np.ndarray,
+        pairs: Optional[np.ndarray] = None,
+        unary_affinities: Optional[np.ndarray] = None,
+    ) -> Dict[str, Any]:
+        t0 = time.time()
+        Q = np.asarray(Q, dtype=np.float64)
+        M = Q.shape[0]
+        if M == 0:
+            return {
+                "solution": np.zeros(0, dtype=np.int32),
+                "energy": 0.0,
+                "selected_indices": [],
+                "runtime_s": 0.0,
+                "solver": "greedy_compatibility",
+            }
+
+        if unary_affinities is not None and len(unary_affinities) == M:
+            unary = np.asarray(unary_affinities, dtype=np.float64)
+        else:
+            unary = -np.diag(Q).copy()
+
+        Q_sym = (Q + Q.T) / 2.0
+        pairwise_compat = -Q_sym.copy()
+        np.fill_diagonal(pairwise_compat, 0.0)
+
+        selected: List[int] = []
+        unselected = set(range(M))
+        has_pairs = pairs is not None and len(pairs) == M
+
+        # Step 1: Pick match with highest unary affinity
+        best_first = int(np.argmax(unary))
+        if unary[best_first] > 0 or len(unselected) == 1:
+            selected.append(best_first)
+            unselected.remove(best_first)
+
+        # Step 2: Iteratively add match with highest marginal gain
+        max_k = self.max_matches or M
+        while len(selected) < max_k and unselected:
+            best_candidate = None
+            best_marginal_gain = -np.inf
+
+            for cand in unselected:
+                if has_pairs:
+                    src_k, ref_k = pairs[cand]
+                    conflict = False
+                    for s in selected:
+                        if pairs[s][0] == src_k or pairs[s][1] == ref_k:
+                            conflict = True
+                            break
+                    if conflict:
+                        continue
+
+                avg_compat = float(np.mean([pairwise_compat[cand, s] for s in selected])) if selected else 0.0
+                marginal_gain = unary[cand] + avg_compat
+
+                if marginal_gain > best_marginal_gain:
+                    best_marginal_gain = marginal_gain
+                    best_candidate = cand
+
+            if best_candidate is None or best_marginal_gain < self.min_consistency:
+                break
+
+            selected.append(best_candidate)
+            unselected.remove(best_candidate)
+
+        solution = np.zeros(M, dtype=np.int32)
+        solution[selected] = 1
+        energy = float(solution @ Q @ solution)
+
+        return {
+            "solution": solution,
+            "energy": energy,
+            "selected_indices": selected,
+            "runtime_s": time.time() - t0,
+            "solver": "greedy_compatibility",
+        }
+
+
+def compute_constraint_diagnostics(
+    solution: np.ndarray,
+    pairs: Optional[np.ndarray] = None,
+    Q: Optional[np.ndarray] = None,
+    exact_energy: Optional[float] = None,
+) -> Dict[str, Any]:
+    """
+    Compute constraint violations and quality metrics for a correspondence solution.
+    """
+    sol = np.asarray(solution, dtype=np.int32)
+    selected_idx = np.where(sol == 1)[0]
+    n_selected = len(selected_idx)
+
+    src_conflicts = 0
+    ref_conflicts = 0
+    if pairs is not None and len(pairs) == len(sol):
+        sel_pairs = pairs[selected_idx]
+        if len(sel_pairs) > 0:
+            src_counts: Dict[int, int] = {}
+            ref_counts: Dict[int, int] = {}
+            for s, r in sel_pairs:
+                src_counts[int(s)] = src_counts.get(int(s), 0) + 1
+                ref_counts[int(r)] = ref_counts.get(int(r), 0) + 1
+            src_conflicts = sum(v - 1 for v in src_counts.values() if v > 1)
+            ref_conflicts = sum(v - 1 for v in ref_counts.values() if v > 1)
+
+    energy = float(sol @ Q @ sol) if Q is not None and len(sol) > 0 else 0.0
+    gap = (energy - exact_energy) if exact_energy is not None else None
+
+    return {
+        "n_selected": n_selected,
+        "src_conflicts": src_conflicts,
+        "ref_conflicts": ref_conflicts,
+        "total_violations": src_conflicts + ref_conflicts,
+        "is_valid": (src_conflicts + ref_conflicts) == 0,
+        "energy": energy,
+        "gap_to_exact": gap,
+    }
+

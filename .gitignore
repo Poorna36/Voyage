@@ -1,0 +1,64 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.hypothesis/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+.conda/
+
+# Environment variables and local secrets
+.env
+.env.*
+*.env
+*.env.local
+*.env.*
+!.env.example
+!.env.*.example
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data & results directories (ignore large binaries)
+data/
+dataset/
+results/
+runs/
+.config/
+weights/
+models/
+*.pt
+*.pth
+*.onnx
+*.zip
+*.tar
+*.tar.gz
+*.IMG
+*.img
+*.TIF
+*.tif
+*.cub
+*.qub
+
+# Node / Frontend build artifacts
+node_modules/
+dist/
+dist-ssr/
+sih-dashboard/node_modules/
+sih-dashboard/dist/
+Voyage-modify1/sih-dashboard/node_modules/
+Voyage-modify1/sih-dashboard/dist/
