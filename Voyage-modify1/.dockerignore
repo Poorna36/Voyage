@@ -1,0 +1,59 @@
+# Git & IDE
+.git
+.gitignore
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Virtual environments & Caches
+__pycache__
+*.py[cod]
+*$py.class
+.venv
+venv
+env
+.pytest_cache
+.coverage
+htmlcov
+.mypy_cache
+
+# Node & Build artifacts
+node_modules
+sih-dashboard/node_modules
+sih-dashboard/dist
+dist
+
+# Large raw/calibrated datasets and sensor binaries
+data/raw/*
+!data/raw/.gitkeep
+data/calibrated/*
+!data/calibrated/.gitkeep
+data/reference/nac/*
+!data/reference/nac/.gitkeep
+data/reference/wac/*
+!data/reference/wac/.gitkeep
+data/scratch/*
+data/processed/*
+!data/processed/.gitkeep
+
+# Large binary file patterns
+*.IMG
+*.img
+*.TIF
+*.tif
+*.cub
+*.zip
+*.qub
+*.tar
+*.tar.gz
+
+# Local documentation & artifacts
+tests/
+results/*
+!results/.gitkeep
+ARCHITECTURE/
+ALL_IN_ONE_*.md
+BEST_ARCHITECTURE_KNOWN.md

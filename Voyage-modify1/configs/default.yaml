@@ -1,0 +1,28 @@
+# =============================================================================
+# configs/default.yaml
+# Global defaults — all other configs inherit from this.
+# DO NOT change values without reading CONFIGURATION.md justification.
+# =============================================================================
+
+global:
+  seed: 42                        # fixed for all RANSAC and selection — report in results
+  coordinate_convention: xy       # col,row — never row,col (see INTERFACES.md §8)
+
+data:
+  raw_dir:        data/raw
+  calibrated_dir: data/calibrated
+  reference_dir:  data/reference
+  pairs_dir:      data/pairs
+  processed_dir:  data/processed
+  results_dir:    results
+  gt_dir:         data/metadata/gt
+  metadata_dir:   data/metadata
+  manifest:       data/pairs/manifest.jsonl
+  skipped:        data/pairs/skipped.jsonl
+  failures:       results/failures.jsonl
+  arbitration_log: results/arbitration.log
+  leaderboard:    results/leaderboard.csv
+
+logging:
+  level: INFO
+  format: "%(asctime)s %(levelname)s %(name)s: %(message)s"

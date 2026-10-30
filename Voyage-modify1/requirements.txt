@@ -1,0 +1,44 @@
+# =============================================================================
+# SIH 2026 (PS-26166) - Lunar Image Correspondence Pipeline Dependencies
+# =============================================================================
+
+# API server
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.0.0
+python-multipart>=0.0.9
+
+# Core Scientific & Math
+numpy>=1.24.0
+scipy>=1.10.0
+sympy>=1.12
+
+# Image Processing & Computer Vision
+opencv-python>=4.8.0
+pillow>=9.5.0
+matplotlib>=3.7.0
+
+# Geospatial & Remote Sensing
+rasterio>=1.3.0
+shapely>=2.0.0
+pygeodesy>=23.0.0
+pyyaml>=6.0
+
+# Deep Learning & Modern Feature Matching
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.3.0
+kornia>=0.7.0
+kornia-rs>=0.1.9
+
+# Robust Estimation & Registration
+pydegensac>=0.1.2
+
+# Progress & Utilities
+tqdm>=4.65.0
+requests>=2.30.0
+pytest>=7.0.0
+
+# Neural Matchers (LightGlue)
+# Can also be installed directly via: pip install git+https://github.com/cvg/LightGlue.git
+git+https://github.com/cvg/LightGlue.git

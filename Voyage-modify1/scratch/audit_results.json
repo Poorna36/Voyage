@@ -1,0 +1,1979 @@
+{
+  "test_1_pipeline_nonexistent": {
+    "status_code": 200,
+    "json": {
+      "run_id": "4f74eb95",
+      "pair_id": "nonexistent_pair_12345",
+      "status": "completed",
+      "matcher": "sift",
+      "stages_completed": [
+        "ingest",
+        "preprocess",
+        "match",
+        "geometric_verify",
+        "register"
+      ],
+      "metrics": {
+        "pair_id": "nonexistent_pair_12345",
+        "matcher": "sift",
+        "src_sensor": "OHRC",
+        "src_gsd_m": 0.35,
+        "ref_type": "NAC",
+        "ref_gsd_m": 0.5,
+        "overlap_fraction": 0.9,
+        "terrain_class": "highland",
+        "latitude_center_deg": 42.8,
+        "longitude_center_deg": 46.8,
+        "crater_density_per_km2": 3.2,
+        "solar_incidence_deg": 47.1,
+        "solar_azimuth_deg": 180.0,
+        "rmse_px": 0.662,
+        "ssim": 0.85,
+        "inlier_ratio": 0.387,
+        "inlier_count": 18,
+        "candidate_count": 48,
+        "spatial_coverage": 0.74,
+        "pipeline_status": "registered_subpixel",
+        "ml_model_status": "active"
+      },
+      "runtime_s": 0.042,
+      "timestamp": "2026-10-29T15:22:54Z"
+    }
+  },
+  "test_2_pipeline_invalid_matcher": {
+    "status_code": 200,
+    "json": {
+      "run_id": "db33e10f",
+      "pair_id": "boguslawsky",
+      "status": "completed",
+      "matcher": "invalid_magic_matcher",
+      "stages_completed": [
+        "ingest",
+        "preprocess",
+        "match",
+        "geometric_verify",
+        "register"
+      ],
+      "metrics": {
+        "pair_id": "boguslawsky",
+        "matcher": "invalid_magic_matcher",
+        "src_sensor": "OHRC",
+        "src_gsd_m": 0.31,
+        "ref_type": "NAC",
+        "ref_gsd_m": 0.5,
+        "overlap_fraction": 0.94,
+        "terrain_class": "polar_highland",
+        "latitude_center_deg": -72.8,
+        "longitude_center_deg": 43.1,
+        "crater_density_per_km2": 4.7,
+        "solar_incidence_deg": 68.2,
+        "solar_azimuth_deg": 178.5,
+        "rmse_px": 0.364,
+        "ssim": 0.92,
+        "inlier_ratio": 0.6667,
+        "inlier_count": 32,
+        "candidate_count": 48,
+        "spatial_coverage": 0.91,
+        "pipeline_status": "registered_subpixel",
+        "ml_model_status": "active"
+      },
+      "runtime_s": 0.042,
+      "timestamp": "2026-10-29T15:22:54Z"
+    }
+  },
+  "test_3_craters_zero_results": {
+    "status_code": 200,
+    "count": 1,
+    "json": [
+      {
+        "id": "alien_base_nonexistent",
+        "name": "Alien_Base_Nonexistent Crater",
+        "lat": -65.1,
+        "lon": -26.9,
+        "height": 108931.0,
+        "diameter_km": 66.0,
+        "depth_km": 5.5,
+        "region": "South Polar Corridor",
+        "floor_inclination_deg": 7.6,
+        "wall_slope_deg": 21.1,
+        "orbit_inclination_deg": 83.1,
+        "solar_incidence_deg": 70.7,
+        "solar_azimuth_deg": 153.1,
+        "water_absorption_depth_pct": 3.1,
+        "water_ice_concentration_wt_pct": 0.99,
+        "water_ice_ppm": 9920,
+        "psr_status": "Sunlit Highland Basin",
+        "subsurface_hydration_level": "Low",
+        "surface_temp_kelvin": 269,
+        "frost_index": 15,
+        "spectrometer_band": 187,
+        "description": "Verified lunar impact formation at 65.1\u00b0S, 26.9\u00b0W. Sunlit Highland Basin with diagnostic IIRS spectra."
+      }
+    ]
+  },
+  "test_4_crater_single_nonexistent": {
+    "status_code": 200,
+    "json": {
+      "id": "nonexistent_crater_xyz",
+      "name": "Nonexistent_Crater_Xyz",
+      "lat": -86.1,
+      "lon": -20.9,
+      "height": 98591.0,
+      "diameter_km": 86.0,
+      "depth_km": 5.5,
+      "region": "South Polar Corridor",
+      "floor_inclination_deg": 2.6,
+      "wall_slope_deg": 23.1,
+      "orbit_inclination_deg": 89.1,
+      "solar_incidence_deg": 89.5,
+      "solar_azimuth_deg": 159.1,
+      "water_absorption_depth_pct": 24.5,
+      "water_ice_concentration_wt_pct": 7.84,
+      "water_ice_ppm": 78400,
+      "psr_status": "Permanently Shadowed (PSR)",
+      "subsurface_hydration_level": "Extreme",
+      "surface_temp_kelvin": 53,
+      "frost_index": 98,
+      "spectrometer_band": 187,
+      "description": "Verified lunar impact formation at 86.1\u00b0S, 20.9\u00b0W. Permanently Shadowed (PSR) with diagnostic IIRS spectra."
+    }
+  },
+  "test_5_slz_fake_scene": {
+    "status_code": 200,
+    "json": {
+      "slope_deg": 9.3,
+      "slope_threshold_deg": 10.0,
+      "slope_pass_rate": 0.483,
+      "boulder_clearance_m": 2.7,
+      "boulder_threshold_m": 2.0,
+      "boulder_pass_rate": 0.577,
+      "overall_safety_score": 52.1,
+      "go_no_go": "NO-GO",
+      "terrain_roughness_cm": 29.5,
+      "crater_density_km2": 4.1,
+      "optimal_landing_site": {
+        "lat": -43.8,
+        "lon": -39.2,
+        "elevation_m": -1415.0,
+        "hazard_probability": 0.479
+      }
+    }
+  },
+  "test_6_spectral_fake_scene": {
+    "status_code": 200,
+    "json": {
+      "pair_id": "totally_fake_scene",
+      "sensor": "IIRS",
+      "band": 187,
+      "probe_coord": [
+        -39.2,
+        -43.8
+      ],
+      "data": [
+        {
+          "wavelength": 0.8,
+          "reflectance": 0.1021
+        },
+        {
+          "wavelength": 0.8226,
+          "reflectance": 0.1044
+        },
+        {
+          "wavelength": 0.8452,
+          "reflectance": 0.1065
+        },
+        {
+          "wavelength": 0.8677,
+          "reflectance": 0.1087
+        },
+        {
+          "wavelength": 0.8903,
+          "reflectance": 0.1107
+        },
+        {
+          "wavelength": 0.9129,
+          "reflectance": 0.1127
+        },
+        {
+          "wavelength": 0.9355,
+          "reflectance": 0.1147
+        },
+        {
+          "wavelength": 0.9581,
+          "reflectance": 0.1166
+        },
+        {
+          "wavelength": 0.9806,
+          "reflectance": 0.1184
+        },
+        {
+          "wavelength": 1.0032,
+          "reflectance": 0.1203
+        },
+        {
+          "wavelength": 1.0258,
+          "reflectance": 0.122
+        },
+        {
+          "wavelength": 1.0484,
+          "reflectance": 0.1238
+        },
+        {
+          "wavelength": 1.071,
+          "reflectance": 0.1255
+        },
+        {
+          "wavelength": 1.0935,
+          "reflectance": 0.1272
+        },
+        {
+          "wavelength": 1.1161,
+          "reflectance": 0.1288
+        },
+        {
+          "wavelength": 1.1387,
+          "reflectance": 0.1304
+        },
+        {
+          "wavelength": 1.1613,
+          "reflectance": 0.132
+        },
+        {
+          "wavelength": 1.1839,
+          "reflectance": 0.1335
+        },
+        {
+          "wavelength": 1.2065,
+          "reflectance": 0.135
+        },
+        {
+          "wavelength": 1.229,
+          "reflectance": 0.1365
+        },
+        {
+          "wavelength": 1.2516,
+          "reflectance": 0.138
+        },
+        {
+          "wavelength": 1.2742,
+          "reflectance": 0.1394
+        },
+        {
+          "wavelength": 1.2968,
+          "reflectance": 0.1408
+        },
+        {
+          "wavelength": 1.3194,
+          "reflectance": 0.1422
+        },
+        {
+          "wavelength": 1.3419,
+          "reflectance": 0.1435
+        },
+        {
+          "wavelength": 1.3645,
+          "reflectance": 0.1449
+        },
+        {
+          "wavelength": 1.3871,
+          "reflectance": 0.1462
+        },
+        {
+          "wavelength": 1.4097,
+          "reflectance": 0.1475
+        },
+        {
+          "wavelength": 1.4323,
+          "reflectance": 0.1487
+        },
+        {
+          "wavelength": 1.4548,
+          "reflectance": 0.15
+        },
+        {
+          "wavelength": 1.4774,
+          "reflectance": 0.1512
+        },
+        {
+          "wavelength": 1.5,
+          "reflectance": 0.1524
+        },
+        {
+          "wavelength": 1.5226,
+          "reflectance": 0.1536
+        },
+        {
+          "wavelength": 1.5452,
+          "reflectance": 0.1548
+        },
+        {
+          "wavelength": 1.5677,
+          "reflectance": 0.156
+        },
+        {
+          "wavelength": 1.5903,
+          "reflectance": 0.1571
+        },
+        {
+          "wavelength": 1.6129,
+          "reflectance": 0.1582
+        },
+        {
+          "wavelength": 1.6355,
+          "reflectance": 0.1594
+        },
+        {
+          "wavelength": 1.6581,
+          "reflectance": 0.1605
+        },
+        {
+          "wavelength": 1.6806,
+          "reflectance": 0.1615
+        },
+        {
+          "wavelength": 1.7032,
+          "reflectance": 0.1626
+        },
+        {
+          "wavelength": 1.7258,
+          "reflectance": 0.1637
+        },
+        {
+          "wavelength": 1.7484,
+          "reflectance": 0.1647
+        },
+        {
+          "wavelength": 1.771,
+          "reflectance": 0.1657
+        },
+        {
+          "wavelength": 1.7935,
+          "reflectance": 0.1667
+        },
+        {
+          "wavelength": 1.8161,
+          "reflectance": 0.1677
+        },
+        {
+          "wavelength": 1.8387,
+          "reflectance": 0.1687
+        },
+        {
+          "wavelength": 1.8613,
+          "reflectance": 0.1697
+        },
+        {
+          "wavelength": 1.8839,
+          "reflectance": 0.1707
+        },
+        {
+          "wavelength": 1.9065,
+          "reflectance": 0.1716
+        },
+        {
+          "wavelength": 1.929,
+          "reflectance": 0.1726
+        },
+        {
+          "wavelength": 1.9516,
+          "reflectance": 0.1735
+        },
+        {
+          "wavelength": 1.9742,
+          "reflectance": 0.1744
+        },
+        {
+          "wavelength": 1.9968,
+          "reflectance": 0.1753
+        },
+        {
+          "wavelength": 2.0194,
+          "reflectance": 0.1762
+        },
+        {
+          "wavelength": 2.0419,
+          "reflectance": 0.1771
+        },
+        {
+          "wavelength": 2.0645,
+          "reflectance": 0.178
+        },
+        {
+          "wavelength": 2.0871,
+          "reflectance": 0.1789
+        },
+        {
+          "wavelength": 2.1097,
+          "reflectance": 0.1797
+        },
+        {
+          "wavelength": 2.1323,
+          "reflectance": 0.1806
+        },
+        {
+          "wavelength": 2.1548,
+          "reflectance": 0.1814
+        },
+        {
+          "wavelength": 2.1774,
+          "reflectance": 0.1823
+        },
+        {
+          "wavelength": 2.2,
+          "reflectance": 0.1831
+        },
+        {
+          "wavelength": 2.2226,
+          "reflectance": 0.1839
+        },
+        {
+          "wavelength": 2.2452,
+          "reflectance": 0.1847
+        },
+        {
+          "wavelength": 2.2677,
+          "reflectance": 0.1855
+        },
+        {
+          "wavelength": 2.2903,
+          "reflectance": 0.1863
+        },
+        {
+          "wavelength": 2.3129,
+          "reflectance": 0.1871
+        },
+        {
+          "wavelength": 2.3355,
+          "reflectance": 0.1879
+        },
+        {
+          "wavelength": 2.3581,
+          "reflectance": 0.1886
+        },
+        {
+          "wavelength": 2.3806,
+          "reflectance": 0.1894
+        },
+        {
+          "wavelength": 2.4032,
+          "reflectance": 0.1901
+        },
+        {
+          "wavelength": 2.4258,
+          "reflectance": 0.1909
+        },
+        {
+          "wavelength": 2.4484,
+          "reflectance": 0.1916
+        },
+        {
+          "wavelength": 2.471,
+          "reflectance": 0.1923
+        },
+        {
+          "wavelength": 2.4935,
+          "reflectance": 0.193
+        },
+        {
+          "wavelength": 2.5161,
+          "reflectance": 0.1937
+        },
+        {
+          "wavelength": 2.5387,
+          "reflectance": 0.1943
+        },
+        {
+          "wavelength": 2.5613,
+          "reflectance": 0.1947
+        },
+        {
+          "wavelength": 2.5839,
+          "reflectance": 0.1948
+        },
+        {
+          "wavelength": 2.6065,
+          "reflectance": 0.1943
+        },
+        {
+          "wavelength": 2.629,
+          "reflectance": 0.1931
+        },
+        {
+          "wavelength": 2.6516,
+          "reflectance": 0.1912
+        },
+        {
+          "wavelength": 2.6742,
+          "reflectance": 0.1888
+        },
+        {
+          "wavelength": 2.6968,
+          "reflectance": 0.1863
+        },
+        {
+          "wavelength": 2.7194,
+          "reflectance": 0.1845
+        },
+        {
+          "wavelength": 2.7419,
+          "reflectance": 0.1838
+        },
+        {
+          "wavelength": 2.7645,
+          "reflectance": 0.1842
+        },
+        {
+          "wavelength": 2.7871,
+          "reflectance": 0.1852
+        },
+        {
+          "wavelength": 2.8097,
+          "reflectance": 0.186
+        },
+        {
+          "wavelength": 2.8323,
+          "reflectance": 0.1862
+        },
+        {
+          "wavelength": 2.8548,
+          "reflectance": 0.1857
+        },
+        {
+          "wavelength": 2.8774,
+          "reflectance": 0.1845
+        },
+        {
+          "wavelength": 2.9,
+          "reflectance": 0.1831
+        },
+        {
+          "wavelength": 2.9226,
+          "reflectance": 0.1816
+        },
+        {
+          "wavelength": 2.9452,
+          "reflectance": 0.1804
+        },
+        {
+          "wavelength": 2.9677,
+          "reflectance": 0.1797
+        },
+        {
+          "wavelength": 2.9903,
+          "reflectance": 0.1797
+        },
+        {
+          "wavelength": 3.0129,
+          "reflectance": 0.1803
+        },
+        {
+          "wavelength": 3.0355,
+          "reflectance": 0.1817
+        },
+        {
+          "wavelength": 3.0581,
+          "reflectance": 0.1837
+        },
+        {
+          "wavelength": 3.0806,
+          "reflectance": 0.1862
+        },
+        {
+          "wavelength": 3.1032,
+          "reflectance": 0.1891
+        },
+        {
+          "wavelength": 3.1258,
+          "reflectance": 0.1923
+        },
+        {
+          "wavelength": 3.1484,
+          "reflectance": 0.1956
+        },
+        {
+          "wavelength": 3.171,
+          "reflectance": 0.1988
+        },
+        {
+          "wavelength": 3.1935,
+          "reflectance": 0.2019
+        },
+        {
+          "wavelength": 3.2161,
+          "reflectance": 0.2047
+        },
+        {
+          "wavelength": 3.2387,
+          "reflectance": 0.2073
+        },
+        {
+          "wavelength": 3.2613,
+          "reflectance": 0.2095
+        },
+        {
+          "wavelength": 3.2839,
+          "reflectance": 0.2114
+        },
+        {
+          "wavelength": 3.3065,
+          "reflectance": 0.213
+        },
+        {
+          "wavelength": 3.329,
+          "reflectance": 0.2143
+        },
+        {
+          "wavelength": 3.3516,
+          "reflectance": 0.2155
+        },
+        {
+          "wavelength": 3.3742,
+          "reflectance": 0.2164
+        },
+        {
+          "wavelength": 3.3968,
+          "reflectance": 0.2173
+        },
+        {
+          "wavelength": 3.4194,
+          "reflectance": 0.218
+        },
+        {
+          "wavelength": 3.4419,
+          "reflectance": 0.2187
+        },
+        {
+          "wavelength": 3.4645,
+          "reflectance": 0.2193
+        },
+        {
+          "wavelength": 3.4871,
+          "reflectance": 0.2199
+        },
+        {
+          "wavelength": 3.5097,
+          "reflectance": 0.2204
+        },
+        {
+          "wavelength": 3.5323,
+          "reflectance": 0.2212
+        },
+        {
+          "wavelength": 3.5548,
+          "reflectance": 0.222
+        },
+        {
+          "wavelength": 3.5774,
+          "reflectance": 0.2228
+        },
+        {
+          "wavelength": 3.6,
+          "reflectance": 0.2237
+        },
+        {
+          "wavelength": 3.6226,
+          "reflectance": 0.2247
+        },
+        {
+          "wavelength": 3.6452,
+          "reflectance": 0.2257
+        },
+        {
+          "wavelength": 3.6677,
+          "reflectance": 0.2267
+        },
+        {
+          "wavelength": 3.6903,
+          "reflectance": 0.2278
+        },
+        {
+          "wavelength": 3.7129,
+          "reflectance": 0.2289
+        },
+        {
+          "wavelength": 3.7355,
+          "reflectance": 0.23
+        },
+        {
+          "wavelength": 3.7581,
+          "reflectance": 0.2312
+        },
+        {
+          "wavelength": 3.7806,
+          "reflectance": 0.2323
+        },
+        {
+          "wavelength": 3.8032,
+          "reflectance": 0.2335
+        },
+        {
+          "wavelength": 3.8258,
+          "reflectance": 0.2348
+        },
+        {
+          "wavelength": 3.8484,
+          "reflectance": 0.236
+        },
+        {
+          "wavelength": 3.871,
+          "reflectance": 0.2373
+        },
+        {
+          "wavelength": 3.8935,
+          "reflectance": 0.2386
+        },
+        {
+          "wavelength": 3.9161,
+          "reflectance": 0.2399
+        },
+        {
+          "wavelength": 3.9387,
+          "reflectance": 0.2413
+        },
+        {
+          "wavelength": 3.9613,
+          "reflectance": 0.2427
+        },
+        {
+          "wavelength": 3.9839,
+          "reflectance": 0.244
+        },
+        {
+          "wavelength": 4.0065,
+          "reflectance": 0.2454
+        },
+        {
+          "wavelength": 4.029,
+          "reflectance": 0.2469
+        },
+        {
+          "wavelength": 4.0516,
+          "reflectance": 0.2483
+        },
+        {
+          "wavelength": 4.0742,
+          "reflectance": 0.2498
+        },
+        {
+          "wavelength": 4.0968,
+          "reflectance": 0.2513
+        },
+        {
+          "wavelength": 4.1194,
+          "reflectance": 0.2528
+        },
+        {
+          "wavelength": 4.1419,
+          "reflectance": 0.2543
+        },
+        {
+          "wavelength": 4.1645,
+          "reflectance": 0.2558
+        },
+        {
+          "wavelength": 4.1871,
+          "reflectance": 0.2573
+        },
+        {
+          "wavelength": 4.2097,
+          "reflectance": 0.2589
+        },
+        {
+          "wavelength": 4.2323,
+          "reflectance": 0.2605
+        },
+        {
+          "wavelength": 4.2548,
+          "reflectance": 0.2621
+        },
+        {
+          "wavelength": 4.2774,
+          "reflectance": 0.2637
+        },
+        {
+          "wavelength": 4.3,
+          "reflectance": 0.2653
+        },
+        {
+          "wavelength": 4.3226,
+          "reflectance": 0.267
+        },
+        {
+          "wavelength": 4.3452,
+          "reflectance": 0.2686
+        },
+        {
+          "wavelength": 4.3677,
+          "reflectance": 0.2703
+        },
+        {
+          "wavelength": 4.3903,
+          "reflectance": 0.272
+        },
+        {
+          "wavelength": 4.4129,
+          "reflectance": 0.2737
+        },
+        {
+          "wavelength": 4.4355,
+          "reflectance": 0.2754
+        },
+        {
+          "wavelength": 4.4581,
+          "reflectance": 0.2771
+        },
+        {
+          "wavelength": 4.4806,
+          "reflectance": 0.2788
+        },
+        {
+          "wavelength": 4.5032,
+          "reflectance": 0.2806
+        },
+        {
+          "wavelength": 4.5258,
+          "reflectance": 0.2823
+        },
+        {
+          "wavelength": 4.5484,
+          "reflectance": 0.2841
+        },
+        {
+          "wavelength": 4.571,
+          "reflectance": 0.2859
+        },
+        {
+          "wavelength": 4.5935,
+          "reflectance": 0.2877
+        },
+        {
+          "wavelength": 4.6161,
+          "reflectance": 0.2895
+        },
+        {
+          "wavelength": 4.6387,
+          "reflectance": 0.2914
+        },
+        {
+          "wavelength": 4.6613,
+          "reflectance": 0.2932
+        },
+        {
+          "wavelength": 4.6839,
+          "reflectance": 0.2951
+        },
+        {
+          "wavelength": 4.7065,
+          "reflectance": 0.2969
+        },
+        {
+          "wavelength": 4.729,
+          "reflectance": 0.2988
+        },
+        {
+          "wavelength": 4.7516,
+          "reflectance": 0.3007
+        },
+        {
+          "wavelength": 4.7742,
+          "reflectance": 0.3026
+        },
+        {
+          "wavelength": 4.7968,
+          "reflectance": 0.3045
+        },
+        {
+          "wavelength": 4.8194,
+          "reflectance": 0.3064
+        },
+        {
+          "wavelength": 4.8419,
+          "reflectance": 0.3084
+        },
+        {
+          "wavelength": 4.8645,
+          "reflectance": 0.3103
+        },
+        {
+          "wavelength": 4.8871,
+          "reflectance": 0.3123
+        },
+        {
+          "wavelength": 4.9097,
+          "reflectance": 0.3142
+        },
+        {
+          "wavelength": 4.9323,
+          "reflectance": 0.3162
+        },
+        {
+          "wavelength": 4.9548,
+          "reflectance": 0.3182
+        },
+        {
+          "wavelength": 4.9774,
+          "reflectance": 0.3202
+        },
+        {
+          "wavelength": 5.0,
+          "reflectance": 0.3222
+        }
+      ],
+      "absorption_trough_wavelength": 3.0,
+      "absorption_depth": 0.027999999999999997
+    }
+  },
+  "test_7_upload_text_file": {
+    "status_code": 200,
+    "json": {
+      "status": "success",
+      "pair_id": "custom_test_text_only_7374",
+      "name": "test_text_only",
+      "files": [
+        "notes.txt"
+      ],
+      "message": "Successfully ingested 1 files into pair 'custom_test_text_only_7374'. Executed sub-pixel co-registration (RMSE: 0.3279 px).",
+      "pair": {
+        "pair_id": "custom_test_text_only_7374",
+        "src": {
+          "sensor": "OHRC",
+          "product_id": "uploaded_custom_test_text_only_7374_src",
+          "gsd_m": 0.31,
+          "solar_incidence_deg": 68.2,
+          "solar_azimuth_deg": 178.5,
+          "utc": "2026-10-29T15:22:55Z"
+        },
+        "ref": {
+          "type": "LRO_NAC",
+          "product_id": "lro_nac_ref_custom_test_text_only_7374",
+          "gsd_m": 0.5
+        },
+        "overlap_fraction": 0.94,
+        "terrain_class": "polar_highland",
+        "latitude_center_deg": -84.5,
+        "longitude_center_deg": 0.0,
+        "crater_density_per_km2": 3.54,
+        "split": "train",
+        "created_at": "2026-10-29T15:22:55Z"
+      },
+      "metrics": {
+        "pair_id": "custom_test_text_only_7374",
+        "rmse_px": 0.3279,
+        "ssim": 0.918,
+        "inlier_ratio": 0.6667,
+        "inlier_count": 32,
+        "candidate_count": 48,
+        "spatial_coverage": 0.88,
+        "matcher_winner": "lightglue",
+        "runtime_s": 2.4,
+        "utc": "2026-10-29T15:22:55Z",
+        "keypoints": [
+          {
+            "id": 1,
+            "src_xy": [
+              477.77,
+              299.4
+            ],
+            "ref_xy": [
+              471.82,
+              298.1
+            ],
+            "confidence": 0.831,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.005,
+              0.005
+            ],
+            "refine_sharpness": 2.1
+          },
+          {
+            "id": 2,
+            "src_xy": [
+              281.96,
+              389.02
+            ],
+            "ref_xy": [
+              277.22,
+              395.46
+            ],
+            "confidence": 0.756,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.015,
+              0.003
+            ],
+            "refine_sharpness": 2.25
+          },
+          {
+            "id": 3,
+            "src_xy": [
+              397.69,
+              283.12
+            ],
+            "ref_xy": [
+              390.27,
+              284.56
+            ],
+            "confidence": 0.64,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.017,
+              -0.007
+            ],
+            "refine_sharpness": 2.4
+          },
+          {
+            "id": 4,
+            "src_xy": [
+              506.34,
+              326.11
+            ],
+            "ref_xy": [
+              501.45,
+              324.3
+            ],
+            "confidence": 0.64,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.018,
+              -0.031
+            ],
+            "refine_sharpness": 2.55
+          },
+          {
+            "id": 5,
+            "src_xy": [
+              313.65,
+              144.48
+            ],
+            "ref_xy": [
+              300.73,
+              147.56
+            ],
+            "confidence": 0.72,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.007,
+              -0.005
+            ],
+            "refine_sharpness": 2.7
+          },
+          {
+            "id": 6,
+            "src_xy": [
+              399.97,
+              419.2
+            ],
+            "ref_xy": [
+              397.57,
+              421.76
+            ],
+            "confidence": 0.64,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.012,
+              0.005
+            ],
+            "refine_sharpness": 2.1
+          },
+          {
+            "id": 7,
+            "src_xy": [
+              505.05,
+              44.79
+            ],
+            "ref_xy": [
+              490.01,
+              40.3
+            ],
+            "confidence": 0.705,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.047,
+              -0.018
+            ],
+            "refine_sharpness": 2.25
+          },
+          {
+            "id": 8,
+            "src_xy": [
+              504.47,
+              482.83
+            ],
+            "ref_xy": [
+              505.27,
+              482.33
+            ],
+            "confidence": 0.757,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.007,
+              0.004
+            ],
+            "refine_sharpness": 2.4
+          },
+          {
+            "id": 9,
+            "src_xy": [
+              175.36,
+              236.65
+            ],
+            "ref_xy": [
+              164.34,
+              245.45
+            ],
+            "confidence": 0.776,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.0,
+              -0.005
+            ],
+            "refine_sharpness": 2.55
+          },
+          {
+            "id": 10,
+            "src_xy": [
+              175.12,
+              399.89
+            ],
+            "ref_xy": [
+              169.88,
+              410.21
+            ],
+            "confidence": 0.828,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.003,
+              -0.001
+            ],
+            "refine_sharpness": 2.7
+          },
+          {
+            "id": 11,
+            "src_xy": [
+              175.11,
+              69.29
+            ],
+            "ref_xy": [
+              158.08,
+              76.49
+            ],
+            "confidence": 0.74,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.019,
+              0.002
+            ],
+            "refine_sharpness": 2.1
+          },
+          {
+            "id": 12,
+            "src_xy": [
+              503.1,
+              25.57
+            ],
+            "ref_xy": [
+              487.68,
+              20.8
+            ],
+            "confidence": 0.648,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.0,
+              0.009
+            ],
+            "refine_sharpness": 2.25
+          },
+          {
+            "id": 13,
+            "src_xy": [
+              175.03,
+              103.94
+            ],
+            "ref_xy": [
+              159.35,
+              111.31
+            ],
+            "confidence": 0.769,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.001,
+              0.025
+            ],
+            "refine_sharpness": 2.4
+          },
+          {
+            "id": 14,
+            "src_xy": [
+              396.25,
+              443.95
+            ],
+            "ref_xy": [
+              395.97,
+              445.8
+            ],
+            "confidence": 0.64,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.205,
+              0.167
+            ],
+            "refine_sharpness": 2.55
+          },
+          {
+            "id": 15,
+            "src_xy": [
+              277.06,
+              205.48
+            ],
+            "ref_xy": [
+              265.96,
+              210.43
+            ],
+            "confidence": 0.64,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.01,
+              -0.008
+            ],
+            "refine_sharpness": 2.7
+          },
+          {
+            "id": 16,
+            "src_xy": [
+              276.52,
+              52.38
+            ],
+            "ref_xy": [
+              259.95,
+              55.94
+            ],
+            "confidence": 0.709,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.001,
+              -0.009
+            ],
+            "refine_sharpness": 2.1
+          },
+          {
+            "id": 17,
+            "src_xy": [
+              400.2,
+              150.8
+            ],
+            "ref_xy": [
+              388.23,
+              150.86
+            ],
+            "confidence": 0.864,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.002,
+              0.0
+            ],
+            "refine_sharpness": 2.25
+          },
+          {
+            "id": 18,
+            "src_xy": [
+              276.52,
+              52.38
+            ],
+            "ref_xy": [
+              259.95,
+              55.94
+            ],
+            "confidence": 0.823,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.001,
+              -0.009
+            ],
+            "refine_sharpness": 2.4
+          },
+          {
+            "id": 19,
+            "src_xy": [
+              173.39,
+              373.6
+            ],
+            "ref_xy": [
+              167.2,
+              383.77
+            ],
+            "confidence": 0.781,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.002,
+              -0.007
+            ],
+            "refine_sharpness": 2.55
+          },
+          {
+            "id": 20,
+            "src_xy": [
+              173.26,
+              23.44
+            ],
+            "ref_xy": [
+              154.62,
+              30.19
+            ],
+            "confidence": 0.64,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.014,
+              0.015
+            ],
+            "refine_sharpness": 2.7
+          },
+          {
+            "id": 21,
+            "src_xy": [
+              276.31,
+              557.6
+            ],
+            "ref_xy": [
+              277.55,
+              565.84
+            ],
+            "confidence": 0.775,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.001,
+              0.003
+            ],
+            "refine_sharpness": 2.1
+          },
+          {
+            "id": 22,
+            "src_xy": [
+              314.54,
+              533.79
+            ],
+            "ref_xy": [
+              315.25,
+              540.47
+            ],
+            "confidence": 0.714,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.007,
+              0.003
+            ],
+            "refine_sharpness": 2.25
+          },
+          {
+            "id": 23,
+            "src_xy": [
+              394.47,
+              331.87
+            ],
+            "ref_xy": [
+              388.88,
+              333.84
+            ],
+            "confidence": 0.865,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.003,
+              -0.001
+            ],
+            "refine_sharpness": 2.4
+          },
+          {
+            "id": 24,
+            "src_xy": [
+              394.47,
+              331.87
+            ],
+            "ref_xy": [
+              388.88,
+              333.84
+            ],
+            "confidence": 0.878,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.003,
+              -0.001
+            ],
+            "refine_sharpness": 2.55
+          },
+          {
+            "id": 25,
+            "src_xy": [
+              314.72,
+              56.69
+            ],
+            "ref_xy": [
+              298.67,
+              58.87
+            ],
+            "confidence": 0.873,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.002,
+              0.001
+            ],
+            "refine_sharpness": 2.7
+          },
+          {
+            "id": 26,
+            "src_xy": [
+              18.35,
+              504.44
+            ],
+            "ref_xy": [
+              15.42,
+              521.3
+            ],
+            "confidence": 0.667,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.019,
+              -0.007
+            ],
+            "refine_sharpness": 2.1
+          },
+          {
+            "id": 27,
+            "src_xy": [
+              393.84,
+              452.66
+            ],
+            "ref_xy": [
+              392.47,
+              455.78
+            ],
+            "confidence": 0.769,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.002,
+              0.001
+            ],
+            "refine_sharpness": 2.25
+          },
+          {
+            "id": 28,
+            "src_xy": [
+              393.84,
+              452.66
+            ],
+            "ref_xy": [
+              392.47,
+              455.78
+            ],
+            "confidence": 0.777,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.002,
+              0.001
+            ],
+            "refine_sharpness": 2.4
+          },
+          {
+            "id": 29,
+            "src_xy": [
+              393.8,
+              39.79
+            ],
+            "ref_xy": [
+              377.92,
+              39.12
+            ],
+            "confidence": 0.84,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.007,
+              -0.011
+            ],
+            "refine_sharpness": 2.55
+          },
+          {
+            "id": 30,
+            "src_xy": [
+              275.28,
+              152.47
+            ],
+            "ref_xy": [
+              262.1,
+              157.5
+            ],
+            "confidence": 0.64,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              0.019,
+              -0.084
+            ],
+            "refine_sharpness": 2.7
+          },
+          {
+            "id": 31,
+            "src_xy": [
+              167.79,
+              565.21
+            ],
+            "ref_xy": [
+              168.31,
+              577.37
+            ],
+            "confidence": 0.765,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.004,
+              -0.001
+            ],
+            "refine_sharpness": 2.1
+          },
+          {
+            "id": 32,
+            "src_xy": [
+              20.97,
+              362.49
+            ],
+            "ref_xy": [
+              12.96,
+              377.9
+            ],
+            "confidence": 0.64,
+            "is_inlier": true,
+            "is_shadow_outlier": false,
+            "refined_delta": [
+              -0.001,
+              -0.006
+            ],
+            "refine_sharpness": 2.25
+          },
+          {
+            "id": 33,
+            "src_xy": [
+              506.34,
+              326.11
+            ],
+            "ref_xy": [
+              508.71,
+              368.88
+            ],
+            "confidence": 0.495,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              8.164,
+              -6.35
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 34,
+            "src_xy": [
+              394.53,
+              447.62
+            ],
+            "ref_xy": [
+              392.56,
+              453.45
+            ],
+            "confidence": 0.51,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              0.506,
+              -0.394
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 35,
+            "src_xy": [
+              22.53,
+              95.26
+            ],
+            "ref_xy": [
+              553.64,
+              123.72
+            ],
+            "confidence": 0.42,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              98.774,
+              -76.824
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 36,
+            "src_xy": [
+              166.24,
+              109.93
+            ],
+            "ref_xy": [
+              75.0,
+              390.67
+            ],
+            "confidence": 0.435,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              50.966,
+              -39.64
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 37,
+            "src_xy": [
+              494.96,
+              75.05
+            ],
+            "ref_xy": [
+              259.95,
+              55.94
+            ],
+            "confidence": 0.45,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              39.919,
+              -31.048
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 38,
+            "src_xy": [
+              191.79,
+              576.37
+            ],
+            "ref_xy": [
+              216.56,
+              336.49
+            ],
+            "confidence": 0.465,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              45.432,
+              -35.336
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 39,
+            "src_xy": [
+              338.67,
+              78.0
+            ],
+            "ref_xy": [
+              321.05,
+              80.15
+            ],
+            "confidence": 0.48,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              0.469,
+              -0.365
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 40,
+            "src_xy": [
+              421.59,
+              120.47
+            ],
+            "ref_xy": [
+              397.6,
+              113.33
+            ],
+            "confidence": 0.495,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              2.296,
+              -1.786
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 41,
+            "src_xy": [
+              69.81,
+              449.68
+            ],
+            "ref_xy": [
+              189.09,
+              283.46
+            ],
+            "confidence": 0.51,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              39.426,
+              -30.665
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 42,
+            "src_xy": [
+              469.64,
+              330.01
+            ],
+            "ref_xy": [
+              501.64,
+              502.2
+            ],
+            "confidence": 0.42,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              31.822,
+              -24.751
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 43,
+            "src_xy": [
+              199.89,
+              122.04
+            ],
+            "ref_xy": [
+              235.15,
+              112.06
+            ],
+            "confidence": 0.435,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              9.509,
+              -7.396
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 44,
+            "src_xy": [
+              439.46,
+              432.33
+            ],
+            "ref_xy": [
+              318.31,
+              123.82
+            ],
+            "confidence": 0.45,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              59.778,
+              -46.494
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 45,
+            "src_xy": [
+              283.91,
+              183.01
+            ],
+            "ref_xy": [
+              376.18,
+              247.41
+            ],
+            "confidence": 0.465,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              21.632,
+              -16.825
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 46,
+            "src_xy": [
+              300.06,
+              581.88
+            ],
+            "ref_xy": [
+              397.6,
+              113.33
+            ],
+            "confidence": 0.48,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              87.413,
+              -67.988
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 47,
+            "src_xy": [
+              512.8,
+              415.84
+            ],
+            "ref_xy": [
+              75.0,
+              390.67
+            ],
+            "confidence": 0.495,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              78.643,
+              -61.167
+            ],
+            "refine_sharpness": 0.45
+          },
+          {
+            "id": 48,
+            "src_xy": [
+              531.44,
+              239.44
+            ],
+            "ref_xy": [
+              201.32,
+              525.46
+            ],
+            "confidence": 0.51,
+            "is_inlier": false,
+            "is_shadow_outlier": true,
+            "refined_delta": [
+              78.037,
+              -60.696
+            ],
+            "refine_sharpness": 0.45
+          }
+        ],
+        "slz": {
+          "slope_deg": 7.96,
+          "slope_threshold_deg": 10.0,
+          "slope_pass_rate": 0.706,
+          "boulder_clearance_m": 5.5,
+          "boulder_threshold_m": 2.0,
+          "boulder_pass_rate": 0.99,
+          "overall_safety_score": 82.0,
+          "go_no_go": "GO",
+          "terrain_roughness_cm": 26.3,
+          "crater_density_km2": 3.54,
+          "optimal_landing_site": {
+            "lat": -84.5001,
+            "lon": 0.0004,
+            "elevation_m": -1253.0,
+            "hazard_probability": 0.18
+          }
+        },
+        "transformation": {
+          "homography_matrix": [
+            [
+              1.010318,
+              0.03569,
+              -21.222709
+            ],
+            [
+              -0.034826,
+              1.009611,
+              12.682755
+            ],
+            [
+              2e-06,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_dx_px": -21.22,
+          "translation_dy_px": 12.68,
+          "translation_dx_m": -6.58,
+          "translation_dy_m": 3.93,
+          "rotation_deg": -1.97,
+          "scale_factor": 1.011
+        },
+        "matcher_benchmarks": {
+          "lightglue": {
+            "rmse_px": 0.328,
+            "inlier_ratio": 0.667,
+            "inliers": 32,
+            "candidates": 48,
+            "status": "Sub-Pixel Optimal",
+            "runtime_s": 0.42
+          },
+          "rift2": {
+            "rmse_px": 0.407,
+            "inlier_ratio": 0.567,
+            "inliers": 27,
+            "candidates": 48,
+            "status": "Illumination Invariant",
+            "runtime_s": 0.78
+          },
+          "lnift": {
+            "rmse_px": 0.453,
+            "inlier_ratio": 0.507,
+            "inliers": 24,
+            "candidates": 48,
+            "status": "Log-Gabor Normalization",
+            "runtime_s": 0.65
+          },
+          "crater": {
+            "rmse_px": 0.498,
+            "inlier_ratio": 0.533,
+            "inliers": 22,
+            "candidates": 42,
+            "status": "Morphology Topology",
+            "runtime_s": 0.55
+          },
+          "sift": {
+            "rmse_px": 0.597,
+            "inlier_ratio": 0.387,
+            "inliers": 18,
+            "candidates": 48,
+            "status": "Classical Baseline",
+            "runtime_s": 0.19
+          }
+        }
+      }
+    }
+  },
+  "test_8_crop_invalid_bounds": {
+    "error": "zero-size array to reduction operation minimum which has no identity"
+  },
+  "test_9_upload_zero_files": {
+    "status_code": 422,
+    "text": "{\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"files\"],\"msg\":\"Field required\",\"input\":null}]}"
+  }
+}

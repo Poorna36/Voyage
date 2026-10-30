@@ -1,0 +1,209 @@
+================================================================================
+AUDIT & RESEARCH REPORT: QUANTUM COMPUTING & TECHNOLOGY IN SIH_DUMP
+Repository: c:\Workspace\code\Research\SIH_dump
+Target Topic: Quantum Computing / Technology across Research, Architecture & Remote Sensing
+Date: October 2026
+================================================================================
+
+--------------------------------------------------------------------------------
+1. REPOSITORY AUDIT FINDINGS (c:\Workspace\code\Research\SIH_dump)
+--------------------------------------------------------------------------------
+An exhaustive, case-insensitive textual scan of every document, architecture
+specification, research summary, and configuration file inside the SIH_dump
+workspace revealed the following:
+
+- Total Files Audited: 36 Markdown/text documentation files across:
+  * Root directory: 13 paper extraction summaries + 1 architecture document
+  * /architecture: 9 pipeline, interface, and benchmark architecture docs
+  * /msm_architecture: 10 Matcher Selection Model (MSM) specifications
+  * /ai_suggestions: 3 supplementary research & reference mapping briefs
+- Direct Occurrences of "Quantum" / "Qubit" / "QPU" / "Annealing": 0
+
+CONCLUSION ON CURRENT SIH_DUMP CONTENTS:
+The files currently stored in SIH_dump are dedicated exclusively to CLASSICAL
+and DEEP LEARNING computer vision, photogrammetry, and metaheuristic optimization
+for ISRO Problem Statement SIH 26166:
+"Multi-modal, Sun-angle and scale-invariant image correspondence using
+Chandrayaan-2 optical images (OHRC / TMC-2 / IIRS) vs LRO (NAC / WAC) reference".
+
+The existing pipeline components comprise:
+1. Classical Feature Matching: SIFT, ASIFT, KAZE, AKAZE, RIFT, RIFT2, LNIFT,
+   OS-SIFT, CFOG, Hybrid Phase Correlation (FFT-based), CNSFM (Crater
+   Neighborhood Structural Feature Matching).
+2. Deep Learning Matchers: SuperGlue (Graph Neural Networks + Optimal Transport),
+   LoFTR (Linear Transformers), RoMa (DINOv2 + CNN match decoder), MatchAnything,
+   LightGlue, DeepMoon (U-Net CNN crater detector), cGAN (PatchGAN radiometric).
+3. Classical Geometric Verification & Optimization: RANSAC, DEGENSAC, MAGSAC,
+   DESCA (Differential Evolution-Based Sample Consensus), ANMS (Adaptive Non-
+   Maximal Suppression).
+4. Photogrammetric Infrastructure: USGS ISIS3, NASA Ames Stereo Pipeline (ASP).
+
+
+--------------------------------------------------------------------------------
+2. WHERE QUANTUM TECHNOLOGY APPEARS IN THE BROADER RESEARCH CONTEXT
+--------------------------------------------------------------------------------
+While SIH_dump itself holds the classical/deep-learning engineering pipeline for
+lunar image registration, quantum computing and quantum technologies are active,
+officially recognized research priorities in the ISRO Space Applications Centre
+(SAC) research basket (RESPOND 2025-2026) that originated these exact satellite
+payload problem domains.
+
+Specifically, ISRO SAC has defined the following formal Quantum Research Areas:
+
+[A] RES-SAC-2025-023:
+    "Quantum Enhanced Algorithms Design and Development for Remote Sensing Data Processing"
+    - Primary Objective: Investigating how quantum computing can accelerate and
+      enhance remote sensing image analysis, satellite payload data handling,
+      and complex pattern recognition.
+    - Scope:
+      * Quantum Image Processing (QIMP) algorithms (quantum edge detection,
+        filtering, image enhancement).
+      * Quantum Machine Learning (QML) models for Earth Observation and planetary
+        multispectral/hyperspectral imagery classification.
+      * Hybrid Classical-Quantum algorithms running on near-term NISQ (Noisy
+        Intermediate-Scale Quantum) devices combined with HPC infrastructure.
+      * Benchmarking quantum speedup and quantum representation fidelity over
+        classical remote sensing pipelines.
+
+[B] RES-SAC-2025-014:
+    "Mathematical modelling, coding and simulation of Quantum Antenna Element and Array"
+    - Primary Objective: Exploration of quantum phenomena (superconducting circuits,
+      quantum state coherence, photonics) for microwave and RF antenna arrays
+      used on spaceborne payloads.
+    - Scope:
+      * Simulation of quantum antenna structures for next-generation space
+        communications and deep-space sensing.
+      * High-frequency quantum electrodynamic (QED) modeling.
+
+[C] RES-SAC-2025-028:
+    "SDN-Based Network with Post-Quantum Cryptography for Secure and Optimized Traffic Management"
+    - Primary Objective: Securing space-ground links and satellite constellation
+      telemetry against future quantum computing attacks (Shor's algorithm).
+    - Scope:
+      * Implementation of NIST-standardized Post-Quantum Cryptography (PQC)
+        (e.g., lattice-based cryptography, ML-KEM, ML-DSA).
+      * Software-Defined Networking (SDN) traffic orchestration for secure space
+        data delivery.
+
+
+--------------------------------------------------------------------------------
+3. TECHNICAL MAPPING: HOW QUANTUM COMPUTING MAPS TO SIH_DUMP'S CORE PROBLEM
+--------------------------------------------------------------------------------
+For researchers evaluating how Quantum Computing / Quantum Information Science
+can be applied to the specific technical challenges addressed in SIH_dump
+(multi-modal correspondence, extreme illumination variations, sub-pixel accuracy,
+and outlier rejection), the table below details the algorithmic mapping:
+
++-----------------------------+-------------------------------+------------------------------------------+
+| Pipeline Challenge in Repo  | Classical Approach in Repo    | Quantum / Quantum-Enhanced Counterpart   |
++-----------------------------+-------------------------------+------------------------------------------+
+| 1. Keypoint Correspondence  | SuperGlue (Sinkhorn Optimal   | QUBO / Ising Formulation on Quantum      |
+|    & Graph Matching         | Transport), CNSFM (Crater     | Annealers (D-Wave) or QAOA (Quantum      |
+|                             | Graph Match), Nearest-Neighbor| Approximate Optimization Algorithm) on   |
+|                             | with Lowe's Ratio Test        | Gate-based QPUs                          |
++-----------------------------+-------------------------------+------------------------------------------+
+| 2. Translation & Alignment  | Hybrid Phase Correlation      | Quantum Phase Estimation (QPE) and       |
+|    in Frequency Domain      | via 2D Fast Fourier Transform | Quantum Fourier Transform (QFT) with     |
+|                             | (FFT cross-power spectrum)    | logarithmic circuit depth                |
++-----------------------------+-------------------------------+------------------------------------------+
+| 3. Robust Consensus &       | RANSAC, MAGSAC, DESCA         | Grover's Search Algorithm (quadratic     |
+|    Outlier Rejection        | (Differential Evolution       | speedup O(sqrt(N)) over brute-force      |
+|                             | Sample Consensus)             | consensus search); Quantum Evolutionary  |
+|                             |                               | Algorithms (QEA with Q-bit chromosomes)  |
++-----------------------------+-------------------------------+------------------------------------------+
+| 4. Cross-Modal Descriptors  | LoFTR, RoMa, RIFT (Log-Gabor  | Variational Quantum Circuits (VQC) /     |
+|    under Nonlinear Radiation| Phase Congruency), LNIFT      | Quantum Neural Networks (QNN) & Quantum  |
+|    Distortion (NRD)         | (Local Normalization)         | Kernel Methods (QSVM) in Hilbert Space   |
++-----------------------------+-------------------------------+------------------------------------------+
+| 5. Planetary Image Memory   | Raw raster cubes, GeoTIFF,    | Quantum Image Representations: FRQI      |
+|    Representation           | ISIS .cub, GDAL arrays        | (Flexible Representation of Quantum      |
+|                             |                               | Images) / NEQR (Novel Enhanced Quantum)  |
++-----------------------------+-------------------------------+------------------------------------------+
+
+
+--------------------------------------------------------------------------------
+4. DEEP-DIVE: FORMULATION OF QUANTUM FEATURE MATCHING (QUBO & QAOA)
+--------------------------------------------------------------------------------
+In SIH_dump, the central challenge is matching a set of keypoints P = {p_i} from
+Chandrayaan-2 (OHRC/TMC) with keypoints Q = {q_j} from LRO (NAC/WAC).
+
+4.1 The Combinatorial Problem:
+Finding optimal point-to-point correspondence under geometric deformation can be
+framed as a Quadratic Assignment Problem (QAP) or Maximum Weight Independent Set
+(MWIS), which is NP-hard.
+
+4.2 Mapping to Ising / QUBO Hamiltonian:
+Let binary variable x_{i,j} = 1 if point p_i in Image A matches point q_j in Image B,
+and 0 otherwise.
+
+Objective Function:
+  min H(x) = - sum_{i,j} U(p_i, q_j) * x_{i,j} 
+             - sum_{i,j, k,l} W((p_i, q_j), (p_k, q_l)) * x_{i,j} * x_{k,l}
+             + lambda * Penalty_Terms(x)
+
+Where:
+- U(p_i, q_j) represents Unary Affinity (similarity of descriptors, e.g. RIFT/RoMa).
+- W((p_i, q_j), (p_k, q_l)) represents Pairwise Structural Consistency:
+    e.g., | ||p_i - p_k|| - ||q_j - q_l|| | < epsilon (distance preservation).
+- Penalty_Terms enforces one-to-one matching constraints:
+    sum_j x_{i,j} <= 1  for all i
+    sum_i x_{i,j} <= 1  for all j
+
+4.3 Execution on Quantum Hardware:
+1. Quantum Annealing (D-Wave):
+   The QUBO matrix Q is embedded onto the QPU's chimera/pegasus topology. The system
+   tunnels through energy barriers to find the ground state corresponding to the
+   global minimum correspondence error, bypassing local minima that trap classical
+   greedy matchers.
+2. Gate-Based Quantum Systems (IBM Quantum / Google Quantum AI):
+   Solvable via QAOA (Quantum Approximate Optimization Algorithm), alternating
+   between a problem Hamiltonian H_P and a mixer Hamiltonian H_M over p layers:
+     |gamma, beta> = prod_{m=1}^p [ e^{-i beta_m H_M} e^{-i gamma_m H_P} ] |+>^N
+
+
+--------------------------------------------------------------------------------
+5. HARDWARE CONSTRAINTS & NISQ-ERA REALITY CHECK
+--------------------------------------------------------------------------------
+Why hasn't the current SIH_dump repository adopted pure quantum algorithms yet?
+
+1. Image Resolution vs Qubit Count:
+   - Chandrayaan-2 OHRC images have resolutions down to 0.25 m/pixel (often
+     tens of thousands of pixels per swath).
+   - Encoding even a small 256x256 image tile directly using NEQR requires:
+     log2(256 * 256) = 16 position qubits + 8 color/greyscale qubits = 24 qubits.
+     However, performing multi-qubit coherent entangling operations across these
+     qubits exceeds the coherence time and gate fidelity of current NISQ hardware.
+
+2. State Preparation Bottleneck (Quantum I/O Problem):
+   - Loading classical satellite imagery into quantum states requires an
+     initialization routine whose circuit depth can scale as O(2^n) or O(N),
+     erasing the theoretical quantum speedup unless data is heavily compressed
+     or represented via specialized quantum random access memory (qRAM).
+
+3. Hybrid Classical-Quantum Architecture as the Practical Bridge:
+   - Level 1 (Classical): Use ISIS3 / GDAL for orthorectification, tiling, and
+     extracting candidate interest points via classical detectors (SIFT/RIFT).
+   - Level 2 (Quantum): Feed the candidate correspondence matrix (e.g. 50-100
+     keypoints) into a QPU solving the QUBO graph matching problem to eliminate
+     outliers with global optimality.
+   - Level 3 (Classical): Run sub-pixel refinement and final homography/bundle
+     adjustment.
+
+
+--------------------------------------------------------------------------------
+6. SUMMARY & RECOMMENDED STEPS
+--------------------------------------------------------------------------------
+1. Current State in SIH_dump:
+   Contains only classical computer vision and deep learning research (SuperGlue,
+   LoFTR, RoMa, RIFT, KAZE, DESCA, ANMS, ASP/ISIS3). No quantum code or docs exist.
+
+2. Relevant Domain Context:
+   ISRO SAC officially prioritizes Quantum Enhanced Remote Sensing (RES-SAC-2025-023),
+   Quantum Antennas (RES-SAC-2025-014), and Post-Quantum Cryptography (RES-SAC-2025-028).
+
+3. Best Path to Introduce Quantum to this Pipeline:
+   If expanding this repository to incorporate quantum techniques, the highest-
+   feasibility entry point is implementing a hybrid classical-quantum correspondence
+   module using QUBO/QAOA for keypoint graph matching (e.g., with Qiskit or
+   D-Wave Ocean SDK) layered on top of the classical RIFT/SuperPoint front-end.
+================================================================================

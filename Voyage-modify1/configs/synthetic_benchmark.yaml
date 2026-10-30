@@ -1,0 +1,188 @@
+# =============================================================================
+# configs/synthetic_benchmark.yaml
+# Synthetic Ground-Truth Benchmark v3.0 — Component-Wise Validation Track
+#
+# Problem-statement-driven transformations ONLY. No generic CV augmentations.
+# Physical, orbital-sensor-specific alterations for Chandrayaan-2 vs LRO.
+# DO NOT change values without reading docs/SYNTHETIC_BENCHMARK_ARCHITECTURE.md.
+# =============================================================================
+
+extends: default  # inherits global.seed, data.* paths
+
+synthetic_benchmark:
+  version: "3.0"
+  architecture_doc: "docs/SYNTHETIC_BENCHMARK_ARCHITECTURE.md"
+
+  # ---------------------------------------------------------------------------
+  # Output directories
+  # ---------------------------------------------------------------------------
+  output:
+    synthetic_dir:    data/synthetic        # generated synthetic image pairs
+    gt_dir:           data/synthetic/gt     # hidden GT points (never loaded by matcher)
+    manifest:         data/synthetic/synthetic_manifest.jsonl
+    results_dir:      results/synthetic_benchmark
+    report_csv:       results/synthetic_benchmark/synthetic_component_report.csv
+    report_md:        results/synthetic_benchmark/synthetic_benchmark_summary.md
+
+  # ---------------------------------------------------------------------------
+  # Anchor Extraction (src/synthetic/anchors.py)
+  # Phase 1 (baseline): Shi-Tomasi grid across uniform grid cells
+  # Phase 2+ (stratified): morphological feature buckets
+  # ---------------------------------------------------------------------------
+  anchors:
+    target_count: 80            # target GT points per pair (range: 60-100)
+    min_count: 60               # pairs below this are skipped (no GT)
+    max_count: 100
+    grid_cells: [8, 8]          # uniform grid for spatial coverage
+    shi_tomasi:
+      max_corners_per_cell: 20  # per grid cell, before de-duplication
+      quality_level: 0.01
+      min_distance_px: 15       # minimum inter-anchor spacing
+      block_size: 7
+    stratification_buckets:
+      # Phase 2+: equal-quota extraction per morphological feature class
+      # Each bucket name maps to a detection strategy in anchors.py
+      high_gradient_terrain: 0.35   # fraction of anchors from high-gradient areas
+      craters:                 0.20  # crater rim / floor detection
+      ridges:                  0.10  # ridge / scarp features
+      maria:                   0.15  # flat textured maria
+      shadow_boundaries:       0.10  # solar terminator / shadow edges
+      polar_terrain:           0.10  # polar regions (high incidence angle)
+    phase: 1  # (TUNE) 1 = Shi-Tomasi only; 2+ = stratified morphological
+
+  # ---------------------------------------------------------------------------
+  # Physical Transformation Engine (src/synthetic/transforms.py)
+  # Strictly orbital-sensor-specific. Generic augmentations are EXCLUDED.
+  # ---------------------------------------------------------------------------
+  transforms:
+
+    # -------------------------------------------------------------------------
+    # 1. Scale-Invariance (GSD Mismatches)
+    # Resampling using exact GSD ratios of target sensors
+    # -------------------------------------------------------------------------
+    scale:
+      enabled: true
+      min_factor: 0.25    # (= 4x scale up; simulates target at finer GSD)
+      max_factor: 4.0     # (= 4x scale down; simulates OHRC:NAC worst-case)
+      interpolation: lanczos  # cv2.INTER_LANCZOS4 — avoids aliasing
+      # Canonical sensor GSD ratios (for stratified test suite)
+      sensor_ratios:
+        ohrc_to_nac: 0.5    # OHRC 0.25m / NAC 0.5m
+        ohrc_to_wac: 0.05   # OHRC 0.25m / WAC 5.0m (approx)
+        tmc_to_wac: 1.0     # TMC-2 5m / WAC 5m (approx 1:1)
+        ohrc_to_tmc: 0.05   # OHRC 0.25m / TMC-2 5m
+
+    # -------------------------------------------------------------------------
+    # 2. Sub-Pixel Orbital Translation & Rotation
+    # Non-integer pixel shifts and slight yaw/pitch differences
+    # -------------------------------------------------------------------------
+    translation:
+      enabled: true
+      max_shift_px: 1.0     # both X and Y: uniform in [-max_shift_px, +max_shift_px]
+      # IMPORTANT: non-integer shifts only (no pure-integer shifts; those are trivial)
+
+    rotation:
+      enabled: true
+      max_angle_deg: 5.0    # yaw/pitch simulation; +/-5 deg matches orbital pointing error
+
+    # -------------------------------------------------------------------------
+    # 3. Sun-Angle (Illumination) Invariance
+    # Phase-angle simulation; does NOT perfectly replicate BRDF (see caveats)
+    # -------------------------------------------------------------------------
+    illumination:
+      enabled: true
+      gamma_range: [0.7, 1.4]       # non-linear photometric distortion I_out = I_in^gamma
+      opposition_surge:
+        enabled: false              # (TUNE) Lommel-Seeliger opposition surge
+        k_surge: 0.3
+      shadow_extension:
+        enabled: true
+        max_extension_factor: 1.5   # extend existing shadows by up to 50%
+        direction: "solar_azimuth"  # always in sun direction from metadata
+
+    # -------------------------------------------------------------------------
+    # 4. Multi-Modal / Cross-Sensor Simulation
+    # Sensor-specific MTF blurring and pushbroom noise
+    # -------------------------------------------------------------------------
+    sensor_simulation:
+      enabled: true
+      mtf_blur:
+        enabled: true
+        sigma_range: [0.5, 1.5]   # Gaussian sigma for sensor MTF (TUNE per sensor)
+      pushbroom_noise:
+        enabled: true
+        max_stripe_amplitude: 0.02  # relative to image mean (subtle vertical striping)
+        n_stripes: 5
+
+    # -------------------------------------------------------------------------
+    # EXCLUDED transformations (documented — do NOT re-enable)
+    # perspective_warp: false   # Orbital imagery is near-nadir; 2D transforms only
+    # jpeg_compression: false   # Not representative of PDS4/ISIS uncompressed data
+    # salt_pepper_noise: false  # Not representative
+    # color_jitter: false       # Lunar is monochromatic
+    # -------------------------------------------------------------------------
+
+  # ---------------------------------------------------------------------------
+  # Statistical Sampling
+  # ---------------------------------------------------------------------------
+  statistics:
+    n_seeds: 50           # N=50 independent random seeds per condition (MANDATORY for Phase 4)
+    confidence_level: 0.95
+    ci_method: "normal"   # "+/-1.96 SE"; or "bootstrap" (slower)
+    bootstrap_n: 1000
+
+  # ---------------------------------------------------------------------------
+  # Evaluation Engine — GT <-> Predicted Assignment
+  # 1-to-1 Hungarian rule; loaded by src/evaluation/synthetic_eval.py
+  # ---------------------------------------------------------------------------
+  evaluation:
+    max_dist_px: 2.0        # fixed threshold radius for GT match assignment
+    assignment: "hungarian"  # scipy.optimize.linear_sum_assignment
+
+    # Oracle composite metric for L1.5 routing accuracy
+    # oracle_best = argmax(0.5*(1/GT_RMSE_norm) + 0.25*GT_inlier_ratio + 0.25*GT_spatial_coverage)
+    oracle_weights:
+      gt_rmse_norm:         0.50
+      gt_inlier_ratio:      0.25
+      gt_spatial_coverage:  0.25
+
+    stages:
+      L1_5:
+        metric: routing_accuracy_vs_oracle
+      L2:
+        metrics: [gt_recall, raw_rmse]
+      L3:
+        metrics: [gt_survival_rate, fp_pruning_rate]
+      L4:
+        metrics: [inlier_precision, inlier_recall, pre_refinement_rmse]
+      L5:
+        metrics: [refinement_gain, pct_improved, pct_degraded, pct_lt_1px, pct_lt_0p5px]
+
+  # ---------------------------------------------------------------------------
+  # Benchmark Execution Phases
+  # ---------------------------------------------------------------------------
+  phases:
+    phase_1:  # End-to-End Component Smoke Test
+      n_gt_points: 5
+      transformations: [translation]
+      seeds: [42]
+      enabled: true
+
+    phase_2:  # Scale & Rotation Suite (Geometric)
+      n_gt_points: 30
+      transformations: [translation, rotation, scale]
+      seeds: 10
+      enabled: false
+
+    phase_3:  # Sun-Angle & Cross-Sensor Suite (Photometric)
+      n_gt_points: 60
+      transformations: [translation, rotation, scale, illumination, sensor_simulation]
+      seeds: 30
+      enabled: false
+
+    phase_4:  # Full Benchmark — N=50 seeds, 95% CI
+      n_gt_points: 100
+      transformations: [translation, rotation, scale, illumination, sensor_simulation]
+      seeds: 50
+      terrain_strata: [highlands, maria, polar, craters, ridges, shadow_boundaries]
+      enabled: false
